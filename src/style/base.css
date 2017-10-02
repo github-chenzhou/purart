@@ -11,7 +11,7 @@ body {
 }
 
 html {
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 
@@ -37,6 +37,16 @@ textarea { outline: none; resize: none; }
   white-space:nowrap;text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;
 }
 .clearfix:after {display: block; content: ""; clear: both;}
+
+
+/*-----------------------------*\
+  $ 基本边距 设计宽度
+\*-----------------------------*/
+
+.pl10 {
+  padding-left: 10px;
+}
+
 
 
 /*-----------------------------*\

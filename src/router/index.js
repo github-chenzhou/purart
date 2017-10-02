@@ -8,6 +8,8 @@ import locale from 'element-ui/lib/locale/lang/en'
 import Hello from '@/components/Hello'
 import Business from '@/pages/business/business'
 import Index from '@/pages/index/index'
+// 商品管理组件
+const Product = resolve => require(['@/pages/business/product'], resolve)
 
 
 Vue.use(Router)
@@ -23,7 +25,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index,
+      component: Business,
     },
     {
       path: '/business',
@@ -31,11 +33,11 @@ const router = new Router({
       component: Business,
       children: [
         {
-          // 当 /:hongbao/ppt 匹配成功，
+          // 当 /product 匹配成功，
           // hongbao 会被渲染在 User 的 <router-view> 中
-          path: 'hongbao/:index',
-          name: 'student-hongbao-page',
-          component: Business
+          path: 'product',
+          name: 'business-product',
+          component: Product
         }
       ]
     }
