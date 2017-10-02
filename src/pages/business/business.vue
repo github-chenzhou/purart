@@ -12,29 +12,13 @@
 
     <div class="page__content">
       <section class="content__left">
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-message"></i>
-              <span slot="title">导航一</span>
-            </template>
-            <el-menu-item-group>
-              <span slot="title">分组一</span>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          </el-menu>
+        <Nav-Component :is-collapse="isCollapse"></Nav-Component>
       </section>
 
       <section class="content__right">
+
+        <router-view></router-view>
+
         <!-- header  -->
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
 
@@ -174,19 +158,68 @@
 
         <el-tab-pane label="主标题" name="title">
           <!-- 拍品信息 -->
-          <el-form class="product__title" ref="title" :model="title" label-width="80px">
+          <el-form class="product__title" ref="title" :model="product" label-width="80px">
+            <el-form-item label="原属国">
+              <el-col :span="6">
+                <el-select v-model="product.origin" placeholder="商品原属国">
+                  <el-option label="中国" value="china"></el-option>
+                  <el-option label="美国" value="beijing2"></el-option>
+                  <el-option label="非洲" value="shanghai22"></el-option>
+                  <el-option label="欧洲" value="beijing4"></el-option>
+                  <el-option label="日本" value="shanghai5"></el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="18" class="pl10">
+                <el-input v-model="product.origin2" placeholder="地区" value=""></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="年份">
+              <el-col :span="6">
+                <el-select v-model="product.year" placeholder="">
+                  <el-option label="公元" value="A.C."></el-option>
+                  <el-option label="公元前" value="B.C."></el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="18" class="pl10">
+                <el-input v-model="product.year2" placeholder="商品年份" value=""></el-input>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="品类">
+              <el-col :span="6">
+                <el-select v-model="product.category" placeholder="" @change="">
+                  <el-option label="艺术品" value="A.C."></el-option>
+                  <el-option label="珠宝" value="B.C."></el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6" class="pl10">
+                <el-select v-model="product.category2" placeholder="">
+                  <el-option label="绘画" value="A.C."></el-option>
+                  <el-option label="雕塑" value="B.C."></el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="6" class="pl10">
+                <el-select v-model="product.category3" placeholder="">
+                  <el-option label="油画" value="A.C."></el-option>
+                  <el-option label="素描" value="B.C."></el-option>
+                </el-select>
+              </el-col>
+
+            </el-form-item>
+
+            <!-- 品牌的话显示品牌 -->
+            <el-form-item label="作者">
+              <el-col >
+                <el-input v-model="product.year2" placeholder="作者" value=""></el-input>
+              </el-col>
+            </el-form-item>
+
             <el-form-item label="商品图片">
-              <div class="file">
-                <label class="file-label container" id="container">
-                  <!-- <input class="file-input" id="file" type="file" name="resume"> -->
-                  <span class="file-cta" id="file">
-                    <span class="file-icon">
-                      <i class="fa fa-upload"></i>
-                    </span>
-                    <span class="file-label">选择图片</span>
-                  </span>
-                </label>
-              </div>
+              <section class="image__list">
+                <div class="pic-view" v-for="(item, index) in product.pics">
+                  <img :src="item.thumb" :class="[item.pic ? '' : 'pic--loading']" :data-src="item.pic" :data-index="index"  @load="handlelaodImg" @click="handleScaleImage" />
+                </div>
+                <div class="image--add" id="container"><p class="camera" v-show="product.pics.length<9" id="file" ></p></div>
+              </section>
             </el-form-item>
 
             <el-form-item>
@@ -195,6 +228,7 @@
             </el-form-item>
 
           </el-form>
+
         </el-tab-pane>
 
         </el-tabs>
@@ -208,7 +242,6 @@
     <section class="index__footer ">
     </section>
 
-    <router-view></router-view>
   </section>
 </template>
 
@@ -219,6 +252,7 @@
   // import '@/util/uploader'
 
   import HeaderComponent from '@/components/header'
+  import NavComponent from './nav'
 
 
   // 子组件不需要引用直接使用
@@ -234,15 +268,29 @@
     data() {
       return {
         index: 1,
-        isCollapse: true,
+        isCollapse: false,
         activeName: 'title',
+
+        // 图片放大数组
+        scaleImages: [],
         product: {
           number: '',
           price: '',
           valuation: '',
           material: '',
           item_status: '',
-          from: ''
+          from: '',
+          // 所属国
+          origin: 'china',
+          origin2: '',
+          // 年份
+          year: 'A.C.',
+          year2: '',
+          // 类目
+          category: '',
+
+          // 商品图片
+          pics:[]
         },
         auction: {
           summary: '',
@@ -258,42 +306,13 @@
           tel: '',
           intro: ''
         },
-        groups: [{
-            label: '金属',
-            options: [{
-              value: 'jin',
-              label: '金'
-            }, {
-              value: 'yin',
-              label: '银'
-            },{
-              value: 'tie',
-              label: '铁'
-            },{
-              value: 'tong',
-              label: '铜'
-            }]
-          }, {
-            label: '石材',
-            options: [{
-              value: 'Chengdu',
-              label: '钻石'
-            }, {
-              value: 'Shenzhen',
-              label: '大理石'
-            }, {
-              value: 'Guangzhou',
-              label: '玉石'
-            }, {
-              value: 'Dalian',
-              label: '水晶'
-            }]
-        }],
+
         presentationMap: new Map()
       };
     },
     components: {
-      HeaderComponent
+      HeaderComponent,
+      NavComponent
     },
     computed: {
     },
@@ -320,40 +339,25 @@
           this.initUpload();
         }, 1000)
 
-      },
+        setTimeout(()=>{
+          require(['photoswipe', 'photoswipe/dist/photoswipe-ui-default', 'photoswipe/dist/photoswipe.css'], function(PhotoSwipe, PhotoSwipeUI_Default) {
+            window.PhotoSwipe = PhotoSwipe;
+            window.PhotoSwipeUI_Default = PhotoSwipeUI_Default;
+          })
+        }, 1500)
 
-      /*
-       * @method 直播悬停反面等事件
-       */
-      iniTimeline(lessonID) {
-        let self = this;
+        setTimeout(()=>{
+          require(['moment'], function(moment) {
+            window.moment = moment;
+          })
+        }, 2500)
 
-        Promise.all([]).then((res) => {
-          if (process.env.NODE_ENV !== 'production') {
-            // self.testTimeline();
-          }
-
-          setTimeout(()=>{
-            require(['photoswipe', 'photoswipe/dist/photoswipe-ui-default', 'photoswipe/dist/photoswipe.css'], function(PhotoSwipe, PhotoSwipeUI_Default) {
-              window.PhotoSwipe = PhotoSwipe;
-              window.PhotoSwipeUI_Default = PhotoSwipeUI_Default;
-            })
-          }, 1500)
-
-          setTimeout(()=>{
-            require(['moment'], function(moment) {
-              window.moment = moment;
-            })
-          }, 2500)
-
-          self.bindTouchEvents();
-
-          // sentry 配置
-          // this.setSentry();
-        });
+        // self.bindTouchEvents();
       },
 
       initUpload(){
+        let self = this;
+
         var uploader = Qiniu.uploader({
           disable_statistics_report: false,   // 禁止自动发送上传统计信息到七牛，默认允许发送
           runtimes: 'html5,flash,html4',      // 上传模式,依次退化
@@ -361,7 +365,7 @@
           // 在初始化时，uptoken, uptoken_url, uptoken_func 三个参数中必须有一个被设置
           // 切如果提供了多个，其优先级为 uptoken > uptoken_url > uptoken_func
           // 其中 uptoken 是直接提供上传凭证，uptoken_url 是提供了获取上传凭证的地址，如果需要定制获取 uptoken 的过程则可以设置 uptoken_func
-          uptoken : 'XbBjw6RmDf-8tTJ8vwVjI6fR1sOboimKSfnRK6Jf:qMud_zYdj43l2-C3mIXNiAgr2qA=:eyJzY29wZSI6InlrdGZyb250ZW5kIiwiZGVhZGxpbmUiOjE1MDU2MjM4MzR9', // uptoken 是上传凭证，由其他程序生成
+          uptoken : 'XbBjw6RmDf-8tTJ8vwVjI6fR1sOboimKSfnRK6Jf:fQAxf0ALWjk2P21PGzAgOuZWuQo=:eyJzY29wZSI6InlrdGZyb250ZW5kIiwiZGVhZGxpbmUiOjE1MDY5MjM4NDR9', // uptoken 是上传凭证，由其他程序生成
           // uptoken_url: '/uptoken',         // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
           uptoken_func: function(file){    // 在需要获取 uptoken 时，该方法会被调用
             // do something
@@ -398,15 +402,17 @@
             'FilesAdded': function(up, files) {
               plupload.each(files, function(file) {
                 // 文件添加进队列后,处理相关的事情
+                // console.log(file);
               });
-          },
-        'BeforeUpload': function(up, file) {
+            },
+            'BeforeUpload': function(up, file) {
                // 每个文件上传前,处理相关的事情
-        },
-        'UploadProgress': function(up, file) {
+               // console.log(file);
+            },
+            'UploadProgress': function(up, file) {
                // 每个文件上传时,处理相关的事情
-        },
-        'FileUploaded': function(up, file, info) {
+            },
+            'FileUploaded': function(up, file, info) {
                // 每个文件上传成功后,处理相关的事情
                // 其中 info.response 是文件上传成功后，服务端返回的json，形式如
                // {
@@ -415,43 +421,47 @@
                //  }
                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
 
-               // var domain = up.getOption('domain');
-               // var res = parseJSON(info.response);
-               // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
-        },
-        'Error': function(up, err, errTip) {
+              var domain = up.getOption('domain');
+              var res = JSON.parse(info);
+              // 获取上传成功后的文件的Url
+              var sourceLink = domain + res.key;
+
+              var oPic = {
+                pic: sourceLink,
+                thumb: sourceLink + '?imageView2/1/w/300/h/300'
+              };
+
+              console.log(oPic);
+
+              self.product.pics.push(oPic);
+              // self.scaleImages
+            },
+            'Error': function(up, err, errTip) {
                //上传出错时,处理相关的事情
-        },
-        'UploadComplete': function() {
+            },
+            'UploadComplete': function() {
                //队列文件处理完毕后,处理相关的事情
-        },
-        'Key': function(up, file) {
-            // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-            // 该配置必须要在 unique_names: false , save_key: false 时才生效
+            },
+            'Key': function(up, file) {
+              // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+              // 该配置必须要在 unique_names: false , save_key: false 时才生效
 
-            var key = "";
-            // do something with key here
-            return key
-        }
-    }
-});
+              var uuid = file.id;
+              var name = file.name;
+              var ext = name && name.substring(name.indexOf('.')) || '';
+              var key = uuid + ext;
 
+              // do something with key here
+              return key
+            }
+          }
+        });
       },
 
       /*
       * @method sentry ga 配置
       */
-      setSentry() {
-        if(typeof Raven !== 'undefined') {
-          Raven.config('http://1a033df516274a349716c21d7d4ce6b2@rain-sentry.xuetangx.com/4').install();
-          Raven.setUserContext({ userid: this.userID });
-        } else {
-          setTimeout(() => {
-            Raven.config('http://1a033df516274a349716c21d7d4ce6b2@rain-sentry.xuetangx.com/4').install();
-            Raven.setUserContext({ userid: this.userID });
-          }, 1500)
-        }
-
+      setGA() {
         typeof ga === 'function' && ga('set', 'userId', this.userID);
       },
 
@@ -472,7 +482,7 @@
           .then((res) => {
             if(res && res.data) {
               let data = res.data;
-              self.pro_perm_info = data.pro_perm_info
+
               // auth
               self.userID = data.userID;
               self.avatar = data.avatar;
@@ -481,31 +491,6 @@
               self.presentationList = data.presentationList;
               self.quizList = data.quizList;
               self.presentationID = data.activePresentationID;
-
-              // classroom
-              self.classroom = data.classroom;
-
-              // set presentation map
-              if(self.presentationList.length) {
-                for(let i = 0; i < self.presentationList.length; i++) {
-                  let presentation = self.presentationList[i];
-
-                  self.formatPresentation(presentation, presentation.presentationID);
-                }
-              }
-
-              // set quiz map
-              if(self.quizList && self.quizList.length) {
-                self.quizList.forEach( function(quiz, index) {
-                  self.quizMap.set(quiz.quizID, quiz);
-                });
-              }
-
-              // set title
-              let presentationData = self.presentationMap.get(self.presentationID);
-              presentationData.Title && (self.title = presentationData.Title);
-              // 课程title
-              document.title = self.courseName = data.classroom && data.classroom.courseName;
 
               return presentationData;
             }
@@ -516,43 +501,11 @@
             if(error && error.status_code === 601) {
               // 课程结束
               console.log('课程结束');
-              location.href = '/v/index/course/normalcourse/learning_lesson_detail/' + this.lessonID;
             } else if(error && error.status_code === 603) {
               // 没有权限
               console.log('没有权限');
             }
           });
-      },
-
-      /*
-      * @method 格式化ppt数据
-      * @param
-      */
-      formatPresentation(presentation, presentationID) {
-        if(presentation) {
-          let pptData = presentation['Slides'];
-
-          if(pptData.length) {
-            pptData.forEach( (slide, index) => {
-              // 收藏 不懂
-              if( slide['tag'] && slide['tag'].length ) {
-                slide['tag'].forEach((tag)=>{
-                  tag === 1 && (slide['question'] = 1);
-                  tag === 2 && (slide['store'] = 1);
-                })
-              }
-
-              // 问题结果
-              if (slide['Problem'] && slide['Result']) {
-                slide['Problem']['Result'] = slide['Result'];
-              }
-            });
-
-            presentation['Slides'] = pptData;
-          }
-
-          this.presentationMap.set(presentationID || presentation.presentationID, presentation);
-        }
       },
 
       /*
@@ -571,6 +524,112 @@
 
       },
 
+      /**
+       *
+       */
+      handlelaodImg(evt) {
+        let target = evt.target;
+        // .pic-view
+        let parentEl = target.parentNode;
+        let src = target.dataset.src || target.src;
+        let index = +target.dataset.index || 0;
+
+        let width = target.naturalWidth || target.width;
+        let height = target.naturalHeight || target.height;
+        let rate = width/height;
+
+        if(!src) {
+          return ;
+        }
+
+        let item = { src: src, w: width || 750, h: height || 520 };
+        this.scaleImages[index] = item;
+
+      // 预览状态并且只有一张图片单独处理
+      // if(this.ispreview && this.oSubject.pics && this.oSubject.pics.length === 1) {
+      //   if(rate > 1) {
+      //     parentEl.style.width = '100%';
+      //     parentEl.style.paddingBottom = 100 / rate + '%';
+      //   } else {
+      //     parentEl.style.height = 325 + 'px';
+      //     parentEl.style.width = 325 * rate + 'px';
+      //   }
+      // } else {
+      //   if(rate > 1) {
+      //     target.style.maxHeight = '100%';
+      //     target.style.maxWidth = 'none';
+      //   }
+      // }
+
+        // 矫正预加载 图片
+        let oImg = new Image();
+        oImg.onload = (e) => {
+          this.scaleImages.forEach( (imgItem) => {
+            if(src === imgItem.src) {
+              imgItem.w = oImg.naturalWidth || oImg.width;
+              imgItem.h = oImg.naturalHeight || oImg.height;
+            }
+          });
+        };
+        oImg.src = src;
+      },
+
+      /*
+       * @method 图片缩放
+       * @param
+       */
+      handleScaleImage(evt) {
+        let targetEl = evt.target;
+        let src = targetEl.dataset.src || targetEl.src;
+        let pswpElement = document.querySelector('.J_pswp');
+        let index = +targetEl.dataset.index || 0;
+        let items = this.scaleImages;
+
+        let options = {
+          index: index,
+          loop: false,
+          maxSpreadZoom: 5,
+          showAnimationDuration: 300,
+          hideAnimationDuration: 300,
+          showHideOpacity: true,
+
+          closeEl: false,
+          captionEl: false,
+          fullscreenEl: false,
+          zoomEl: false,
+          shareEl: false,
+          counterEl: false,
+          arrowEl: false,
+          preloaderEl: false,
+
+          isClickableElement: function(el) {
+            // return el.tagName === 'P';
+          },
+          getThumbBoundsFn: function(index) {
+            // find thumbnail element
+            var thumbnail = targetEl;
+
+            // get window scroll Y
+            var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+            // optionally get horizontal scroll
+
+            // get position of element relative to viewport
+            var rect = thumbnail.getBoundingClientRect();
+
+            // w = width
+            return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+          }
+        };
+
+        // this.gallery && this.gallery.destroy();
+        this.gallery = null;
+        // Initializes and opens PhotoSwipe
+        let gallery = this.gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+        gallery.init();
+
+      },
+
       /*
       * @method handleTimeline滚动检测
       * @param
@@ -581,19 +640,6 @@
         if(this.hasMsg && target.scrollTop < 200) {
           this.hasMsg = false;
         }
-      },
-
-      /*
-      * @method 绑定滚动事件
-      * @param
-      */
-      bindTouchEvents() {
-        this.$el.querySelector('.J_timeline').addEventListener('touchmove', this.handleTouchMove);
-        this.$el.querySelector('.J_timeline').addEventListener('touchend', this.handleTouchMove);
-      },
-      unbindTouchEvents() {
-        this.$el.querySelector('.J_timeline').removeEventListener('touchmove', this.handleTouchMove);
-        this.$el.querySelector('.J_timeline').removeEventListener('touchend', this.handleTouchMove);
       },
 
       /*
@@ -636,12 +682,13 @@
 
 
 
+
   /*-------------------*\
     $ header
   \*-------------------*/
 
   .product__form {
-    width: 450px;
+    min-width: 450px;
     text-align: left;
   }
 
@@ -664,19 +711,100 @@
 
 
     .content__left {
-      margin-right: 17px;
-      width: 65px;
+      position: fixed;
+      margin-right: 20px;
+      width: 180px;
       height: 100%;
       text-align: left;
       background-color: #eef1f6;
     }
 
     .content__right {
-
+      flex: 1;
+      margin-left: 200px;
+      max-width: 650px;
     }
 
   }
 
+
+   /*-------------------*\
+    $ 图片作答
+  \*-------------------*/
+
+
+  .image__list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+
+    padding: 15px 9px 13px;
+
+    .image--add {
+      position: relative;
+
+      margin: 0 0.8% 1.6%;
+      width: 31.733%;
+      padding-bottom: 31.733%;
+      border-radius: 2px;
+      border: 1px solid #C8C8C8;
+
+      .camera {
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        opacity: 0;
+      }
+    }
+
+    .image--add:before,
+    .image--add:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 53px;
+      height: 1px;
+
+      transform: translate(-50%, -50%);
+
+      background: #C8C8C8;
+    }
+    .image--add:after {
+      width: 1px;
+      height: 53px;
+    }
+
+    .pic-view {
+      position: relative;
+      margin: 0 0.8% 1.6%;
+      width: 31.733%;
+      padding-bottom: 31.733%;
+
+      background: #c8c8c8;
+      border-radius: 2px;
+      overflow: hidden;
+      -webkit-touch-callout: none;
+
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        max-width: 100%;
+        transform: translate(-50%, -50%);
+      }
+
+      .pic--loading {
+        width: 75%;
+      }
+    }
+
+  }
 
 
 
