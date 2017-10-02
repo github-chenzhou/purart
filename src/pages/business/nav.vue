@@ -17,14 +17,10 @@
 export default {
   name: 'header',
   props: {
-    index: {
-      type: Number,
-      default: 1
-    }
+    index: 1
   },
   data () {
     return {
-      title: "后台"
     }
   },
   methods: {

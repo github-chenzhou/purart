@@ -8,18 +8,7 @@
 
 <template>
   <section class="page">
-    <div class="page_header page-fixed">
-      <el-menu theme="dark" :default-active="1" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1">首页</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">我的工作台</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-menu-item index="2-2">选项2</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-        </el-submenu>
-        <el-menu-item index="3"><a href="" target="_blank">管理</a></el-menu-item>
-      </el-menu>
-    </div>
+    <Header-Component :index="index"></Header-Component>
 
     <div class="page__content">
       <section class="content__left">
@@ -104,7 +93,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">立即创建</el-button>
+              <el-button type="primary" >立即创建</el-button>
               <el-button>取消</el-button>
             </el-form-item>
 
@@ -135,7 +124,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">立即创建</el-button>
+              <el-button type="primary" >立即创建</el-button>
               <el-button>取消</el-button>
             </el-form-item>
 
@@ -146,7 +135,7 @@
           <!-- 拍品信息 -->
           <el-form class="product__form" ref="form" :model="business" label-width="80px">
             <el-form-item label="拍行名称">
-              <el-input v-model="business.name" placeholder="LOT" value="拍行名称"></el-input>
+              <el-input v-model="business.name" placeholder="拍行名称" value="拍行名称"></el-input>
             </el-form-item>
             <el-form-item label="拍行地址">
               <el-col :span="6">
@@ -176,7 +165,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">确定</el-button>
+              <el-button type="primary" >确定</el-button>
               <el-button>取消</el-button>
             </el-form-item>
 
@@ -201,7 +190,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">确定</el-button>
+              <el-button type="primary" >确定</el-button>
               <el-button>取消</el-button>
             </el-form-item>
 
@@ -229,6 +218,8 @@
   import '@/util/util'
   // import '@/util/uploader'
 
+  import HeaderComponent from '@/components/header'
+
 
   // 子组件不需要引用直接使用
   window.request = request;
@@ -242,6 +233,8 @@
     },
     data() {
       return {
+        index: 1,
+        isCollapse: true,
         activeName: 'title',
         product: {
           number: '',
@@ -296,13 +289,11 @@
               label: '水晶'
             }]
         }],
-        presentationMap: new Map(),
-        // timeline列表
-        cards: []
+        presentationMap: new Map()
       };
     },
     components: {
-      // identity: () => import('@/components/student/identityBinding.vue')
+      HeaderComponent
     },
     computed: {
     },
@@ -310,11 +301,8 @@
       '$route' (to, from) {
         // 对路由变化作出响应...
 
-        if(from.name == 'student-danmu-page' || from.name == 'student-submission-page') {
-          document.title = this.courseName && this.courseName;
-          setTimeout(() => {
-            typeof this.handleScrollToTop === 'function' && this.handleScrollToTop();
-          }, 300)
+        if(from.name == 'student-danmu-page') {
+
         }
       }
     },
@@ -366,52 +354,52 @@
       },
 
       initUpload(){
-         var uploader = Qiniu.uploader({
-    disable_statistics_report: false,   // 禁止自动发送上传统计信息到七牛，默认允许发送
-    runtimes: 'html5,flash,html4',      // 上传模式,依次退化
-    browse_button: 'file',         // 上传选择的点选按钮，**必需**
-    // 在初始化时，uptoken, uptoken_url, uptoken_func 三个参数中必须有一个被设置
-    // 切如果提供了多个，其优先级为 uptoken > uptoken_url > uptoken_func
-    // 其中 uptoken 是直接提供上传凭证，uptoken_url 是提供了获取上传凭证的地址，如果需要定制获取 uptoken 的过程则可以设置 uptoken_func
-    uptoken : 'XbBjw6RmDf-8tTJ8vwVjI6fR1sOboimKSfnRK6Jf:qMud_zYdj43l2-C3mIXNiAgr2qA=:eyJzY29wZSI6InlrdGZyb250ZW5kIiwiZGVhZGxpbmUiOjE1MDU2MjM4MzR9', // uptoken 是上传凭证，由其他程序生成
-    // uptoken_url: '/uptoken',         // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
-    uptoken_func: function(file){    // 在需要获取 uptoken 时，该方法会被调用
-       // do something
-       return uptoken;
-    },
-    get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
-    // downtoken_url: '/downtoken',
-    // Ajax请求downToken的Url，私有空间时使用,JS-SDK 将向该地址POST文件的key和domain,服务端返回的JSON必须包含`url`字段，`url`值为该文件的下载地址
-    // unique_names: true,              // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
-    // save_key: true,                  // 默认 false。若在服务端生成 uptoken 的上传策略中指定了 `save_key`，则开启，SDK在前端将不对key进行任何处理
-    domain: 'http://sfe.ykt.io/',     // bucket 域名，下载资源时用到，如：'http://xxx.bkt.clouddn.com/' **必需**
-    container: 'container',             // 上传区域 DOM ID，默认是 browser_button 的父元素，
-    max_file_size: '100mb',             // 最大文件体积限制
-    // flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
-    max_retries: 3,                     // 上传失败最大重试次数
-    dragdrop: true,                     // 开启可拖曳上传
-    drop_element: 'container',          // 拖曳上传区域元素的 ID，拖曳文件或文件夹后可触发上传
-    chunk_size: '4mb',                  // 分块上传时，每块的体积
-    auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传,
-    //x_vars : {
-    //    自定义变量，参考http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html
-    //    'time' : function(up,file) {
-    //        var time = (new Date()).getTime();
-              // do something with 'time'
-    //        return time;
-    //    },
-    //    'size' : function(up,file) {
-    //        var size = file.size;
+        var uploader = Qiniu.uploader({
+          disable_statistics_report: false,   // 禁止自动发送上传统计信息到七牛，默认允许发送
+          runtimes: 'html5,flash,html4',      // 上传模式,依次退化
+          browse_button: 'file',         // 上传选择的点选按钮，**必需**
+          // 在初始化时，uptoken, uptoken_url, uptoken_func 三个参数中必须有一个被设置
+          // 切如果提供了多个，其优先级为 uptoken > uptoken_url > uptoken_func
+          // 其中 uptoken 是直接提供上传凭证，uptoken_url 是提供了获取上传凭证的地址，如果需要定制获取 uptoken 的过程则可以设置 uptoken_func
+          uptoken : 'XbBjw6RmDf-8tTJ8vwVjI6fR1sOboimKSfnRK6Jf:qMud_zYdj43l2-C3mIXNiAgr2qA=:eyJzY29wZSI6InlrdGZyb250ZW5kIiwiZGVhZGxpbmUiOjE1MDU2MjM4MzR9', // uptoken 是上传凭证，由其他程序生成
+          // uptoken_url: '/uptoken',         // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
+          uptoken_func: function(file){    // 在需要获取 uptoken 时，该方法会被调用
+            // do something
+            return uptoken;
+          },
+          get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
+          // downtoken_url: '/downtoken',
+          // Ajax请求downToken的Url，私有空间时使用,JS-SDK 将向该地址POST文件的key和domain,服务端返回的JSON必须包含`url`字段，`url`值为该文件的下载地址
+          // unique_names: true,              // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
+          // save_key: true,                  // 默认 false。若在服务端生成 uptoken 的上传策略中指定了 `save_key`，则开启，SDK在前端将不对key进行任何处理
+          domain: 'http://sfe.ykt.io/',     // bucket 域名，下载资源时用到，如：'http://xxx.bkt.clouddn.com/' **必需**
+          container: 'container',             // 上传区域 DOM ID，默认是 browser_button 的父元素，
+          max_file_size: '100mb',             // 最大文件体积限制
+          // flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
+          max_retries: 3,                     // 上传失败最大重试次数
+          dragdrop: true,                     // 开启可拖曳上传
+          drop_element: 'container',          // 拖曳上传区域元素的 ID，拖曳文件或文件夹后可触发上传
+          chunk_size: '4mb',                  // 分块上传时，每块的体积
+          auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传,
+          //x_vars : {
+          //    自定义变量，参考http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html
+          //    'time' : function(up,file) {
+          //        var time = (new Date()).getTime();
+                   // do something with 'time'
+          //        return time;
+          //    },
+          //    'size' : function(up,file) {
+          //        var size = file.size;
               // do something with 'size'
-    //        return size;
-    //    }
-    //},
-    init: {
-        'FilesAdded': function(up, files) {
-            plupload.each(files, function(file) {
+                //        return size;
+          //    }
+          //},
+          init: {
+            'FilesAdded': function(up, files) {
+              plupload.each(files, function(file) {
                 // 文件添加进队列后,处理相关的事情
-            });
-        },
+              });
+          },
         'BeforeUpload': function(up, file) {
                // 每个文件上传前,处理相关的事情
         },
@@ -575,6 +563,14 @@
         console.log(tab, event);
       },
 
+      handleOpen() {
+
+      },
+
+      handleClose() {
+
+      },
+
       /*
       * @method handleTimeline滚动检测
       * @param
@@ -669,7 +665,7 @@
 
     .content__left {
       margin-right: 17px;
-      width: 210px;
+      width: 65px;
       height: 100%;
       text-align: left;
       background-color: #eef1f6;

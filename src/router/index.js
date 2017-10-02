@@ -23,7 +23,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index,
+      component: Business,
     },
     {
       path: '/business',
