@@ -9,6 +9,8 @@ import locale from 'element-ui/lib/locale/lang/en'
 import Business from '@/pages/business/business.vue'
 // 商品组件
 const Product = resolve => require(['@/pages/business/product'], resolve)
+// 商品列表组件
+const ProductList = resolve => require(['@/pages/business/product-list'], resolve)
 // 拍卖场组件
 const Auction = resolve => require(['@/pages/business/auction'], resolve)
 // 拍行组件
@@ -20,21 +22,22 @@ Vue.use(Element)
 Vue.use(Element, { locale })
 
 const businessRouter = new Router({
-  base: '/',
+  // base: '/',
   base: process.env.NODE_ENV === 'production' ? '/business' : '/',
   mode: process.env.NODE_ENV === 'production' ? 'history' : 'hash',
-  // base: '/',
-  // mode: 'hash',
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'business',
       component: Business,
-      children: [
-        {
+      children: [{
           path: 'product',
           name: 'business-product',
           component: Product
+        },
+        {
+          path: 'products',
+          name: 'business-product-list',
+          component: ProductList
         },
         {
           path: 'auction',
@@ -71,7 +74,7 @@ businessRouter.beforeEach((to, from, next) => {
   next()
 })
 
-businessRouter.afterEach(route=>{
+businessRouter.afterEach(route => {
   // google统计
   setTimeout(() => {
     typeof ga === 'function' && ga('send', 'pageview', location.pathname);

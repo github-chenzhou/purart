@@ -507,6 +507,7 @@ export default {
 
   .business__product {
     padding: 20px 0;
+    max-width: 650px;
   }
 
   /*-------------------*\

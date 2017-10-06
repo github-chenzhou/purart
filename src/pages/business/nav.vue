@@ -17,12 +17,18 @@
       </router-link>
     </el-menu-item>
     <el-menu-item index="2">
+      <router-link to="/products" tag="div">
+        <i class="el-icon-more"></i>
+        <span>拍品列表</span>
+      </router-link>
+    </el-menu-item>
+    <el-menu-item index="3">
       <router-link to="/info" tag="div">
         <i class="el-icon-menu"></i>
         <span>拍行信息</span>
       </router-link>
     </el-menu-item>
-    <el-menu-item index="3">
+    <el-menu-item index="4">
       <router-link to="/auction" tag="div">
         <i class="el-icon-star-on"></i>
         <span>拍场信息</span>

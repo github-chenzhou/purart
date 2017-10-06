@@ -82,5 +82,6 @@ export default {
 <style lang="scss" scoped>
   .business__product {
     padding: 20px 0;
+    max-width: 650px;
   }
 </style>

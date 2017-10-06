@@ -249,7 +249,6 @@
     .content__right {
       flex: 1;
       margin-left: 200px;
-      max-width: 650px;
     }
 
   }
