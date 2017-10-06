@@ -15,12 +15,12 @@
       </el-form-item>
       <el-form-item label="拍行地址">
         <el-col :span="6">
-          <el-select v-model="business.address" placeholder="请选择商品状况">
-            <el-option label="中国" value="jinshu"></el-option>
-            <el-option label="美国" value="beijing2"></el-option>
-            <el-option label="非洲" value="shanghai22"></el-option>
-            <el-option label="欧洲" value="beijing4"></el-option>
-            <el-option label="日本" value="shanghai5"></el-option>
+          <el-select v-model="business.address" placeholder="请选拍行地址">
+            <el-option label="中国" value="China"></el-option>
+            <el-option label="美国" value="US"></el-option>
+            <el-option label="非洲" value="Africa"></el-option>
+            <el-option label="欧洲" value="Europe"></el-option>
+            <el-option label="日本" value="Japan"></el-option>
           </el-select>
         </el-col>
         <el-col :span="18" class="pl10">
