@@ -52,6 +52,23 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
+      chunks: ['vendor', 'app'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+
+    new HtmlWebpackPlugin({
+      filename: config.build.business,
+      template: './src/pages/business/business.html',
+      chunks: ['vendor', 'business'],
       inject: true,
       minify: {
         removeComments: true,
@@ -81,10 +98,10 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'manifest',
+    //   chunks: ['vendor']
+    // }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

@@ -11,19 +11,19 @@
       </el-menu-item-group>
     </el-submenu> -->
     <el-menu-item index="1">
-      <router-link to="/business/product" tag="div">
+      <router-link to="/product" tag="div">
         <i class="el-icon-search"></i>
-        <span>商品信息</span>
+        <span>拍品信息</span>
       </router-link>
     </el-menu-item>
     <el-menu-item index="2">
-      <router-link to="/business" tag="div">
+      <router-link to="/info" tag="div">
         <i class="el-icon-menu"></i>
-        <span>商家信息</span>
+        <span>拍行信息</span>
       </router-link>
     </el-menu-item>
     <el-menu-item index="3">
-      <router-link to="/business" tag="div">
+      <router-link to="/auction" tag="div">
         <i class="el-icon-star-on"></i>
         <span>拍场信息</span>
       </router-link>

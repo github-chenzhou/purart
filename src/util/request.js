@@ -2,6 +2,8 @@ import axios from 'axios'
 // import Promise from 'bluebird'
 import Cookies from 'js-cookie'
 
+axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
 !Promise && require(['bluebird'], function(Promise) {
   window.Promise = window.Promise || Promise;
@@ -29,12 +31,6 @@ const handleResponse = (res) => {
     // 没有权限
     if(res.data.status_code === 1 || res.data.status_code === 2 || res.data.status_code === 4) {
       location.href = '/v/index/course/normalcourse/error/' + res.data.status_code;
-    }
-
-    // 没有填写信息 跳转个人信息完善页
-    if(res.data.status_code === 5) {
-      let nextURL = location.href;
-      location.href = `/v/index/edituserinfo_simple?next_url=${nextURL}`;
     }
 
     return Promise.reject(res.data)
@@ -67,7 +63,8 @@ export default {
     params = params || {}
 
     // post统一csrftoken
-    axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken') || ''
+    // axios.defaults.headers['X-CSRFToken'] = Cookies.get('csrftoken') || ''
+    // , { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }}
 
     return axios
       .post(url, params)

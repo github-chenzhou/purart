@@ -96,7 +96,7 @@
   // 子组件不需要引用直接使用
   window.request = request;
   if (process.env.NODE_ENV !== 'production') {
-    request.post = request.get
+    // request.post = request.get
   }
 
   export default {
@@ -129,12 +129,6 @@
             typeof this.handleScrollToTop === 'function' && this.handleScrollToTop();
           }, 300)
         }
-      },
-      lessonStatus (newValue, oldValue) {
-        // 下课啦
-        if(newValue === 1) {
-          this.backURL = '/v/index/course/normalcourse/learning_lesson_detail/' + this.lessonID;
-        }
       }
     },
     filters: {
@@ -146,18 +140,6 @@
        */
       init() {
         let self = this;
-
-
-        // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
-        configWX();
-        wx && wx.ready(() => {
-          wx.hideMenuItems({
-            menuList: [
-              'menuItem:share:appMessage', 'menuItem:share:timeline',
-              'menuItem:share:qq', 'menuItem:share:weiboApp',
-              'menuItem:favorite', 'menuItem:share:QZone']
-          });
-        });
       },
 
       /*
@@ -184,7 +166,7 @@
             })
           }, 2500)
 
-          self.bindTouchEvents();
+          // self.bindTouchEvents();
 
           // sentry 配置
           // this.setSentry();

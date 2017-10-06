@@ -1,0 +1,46 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=keywords content="purart, 拍卖, 国内拍卖, 拍卖行, 珠宝, 瓷器, 在线拍卖"><meta name=Description content=在线拍卖><link type=image/x-icon rel="shortcut icon" href=""><title>尖儿蚤-管理</title><script src=//res.wx.qq.com/open/js/jweixin-1.0.0.js></script><link href=/static/css/business.625ff17fdadcd47559989f58c8a7e1e0.css rel=stylesheet></head><body><div id=app><canvas id=canvas style="display: block;position: absolute;top: 50%;left: 50%; width: 100%; height: 400px; transform: translate(-50%, -50%)"></canvas><script>var canvas = document.querySelector('#canvas');
+        var ctx = canvas.getContext('2d');
+
+        canvas.width = parseInt(getComputedStyle(canvas).width);
+        canvas.height = parseInt(getComputedStyle(canvas).height);
+
+        var P = 4;
+        var A = 4;
+
+        function draw(shift) {
+          var w = canvas.width;
+          var h = canvas.height;
+
+          shift = shift >= 500*Math.PI ? shift - 100*Math.PI : shift;
+          ctx.clearRect(0, 0, w, h);
+
+          var grd = ctx.createLinearGradient(0, 0, w, h);
+          grd.addColorStop(0, '#4a8bf5');
+          grd.addColorStop(1, '#f16b55');
+          ctx.strokeStyle = grd;
+          ctx.lineCap = 'round';
+
+          for (var i = 0; i < w; ) {
+            var _A = Math.abs(A*Math.cos(2*i));
+            ctx.beginPath();
+            var pos = Math.exp(-_A * i / w) * Math.sin(P * Math.PI * (i + shift) / w);
+            pos *= h / 2;
+            var lw = Math.exp(-_A * i / w) * Math.sin(3 * Math.PI * (i - shift) / w) * 2;
+            ctx.lineWidth = (lw)+1;
+            ctx.lineTo(i, h / 2 - pos);
+            ctx.closePath();
+            ctx.stroke();
+            i += 1;
+          }
+
+          window.requestAnimationFrame(() => {
+            draw(shift + 1);
+          });
+        }
+
+        draw(0);</script></div><section class="pswp J_pswp" tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></section><script type=text/javascript src=http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/plupload/2.1.2/plupload.full.min.js></script><script type=text/javascript src=https://cdn.staticfile.org/plupload/2.1.2/moxie.js></script><script src=https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js></script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', '', 'auto');
+        ga('send', 'pageview', location.pathname);</script><script type=text/javascript src=/static/js/vendor.e25a8498869152f1e5a5.js></script><script type=text/javascript src=/static/js/business.7eeb1b0b022ae9d23fc4.js></script></body></html>

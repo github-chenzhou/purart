@@ -336,7 +336,7 @@
   // 子组件不需要引用直接使用
   window.request = request;
   if (process.env.NODE_ENV !== 'production') {
-    request.post = request.get
+    // request.post = request.get
   }
 
   export default {

@@ -17,8 +17,8 @@ export default {
   name: 'header',
   props: {
     index: {
-      type: Number,
-      default: 1
+      type: String,
+      default: '1'
     }
   },
   data () {
