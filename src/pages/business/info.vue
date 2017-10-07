@@ -64,6 +64,7 @@ export default {
   data () {
     return {
        business: {
+        business_id: 0,
         // 拍行名称
         name: '',
         // 拍行地址
@@ -85,6 +86,24 @@ export default {
   methods: {
     handelconfirm() {
       let URL = API.business.CREAT_BUSINESS || 'http://47.95.231.215:8000/seller/business_input/';
+      let params = {
+          business_id: this.business.business_id,
+          // 拍行名称
+          name: this.business.name,
+          // 拍行地址
+          address: this.business.address,
+          address2: this.business.address2,
+          // 街道
+          street: this.business.street,
+          // 拍行邮编
+          zip_code: this.business.zip_code,
+          email: this.business.email,
+          tel: '',
+          // 拍行简介
+          intro: '',
+          // 加价幅度
+          increase_rate: ''
+      };
 
       // lessons
       return request.post(URL, this.business)

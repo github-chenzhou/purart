@@ -13,6 +13,8 @@ const Product = resolve => require(['@/pages/business/product'], resolve)
 const ProductList = resolve => require(['@/pages/business/product-list'], resolve)
 // 拍卖场组件
 const Auction = resolve => require(['@/pages/business/auction'], resolve)
+// 拍卖场列表
+const AuctionList = resolve => require(['@/pages/business/auction-list'], resolve)
 // 拍行组件
 const BusinessInfo = resolve => require(['@/pages/business/info'], resolve)
 
@@ -30,7 +32,7 @@ const businessRouter = new Router({
       name: 'business',
       component: Business,
       children: [{
-          path: 'product',
+          path: 'product/:id',
           name: 'business-product',
           component: Product
         },
@@ -40,9 +42,14 @@ const businessRouter = new Router({
           component: ProductList
         },
         {
-          path: 'auction',
+          path: 'auction/:id',
           name: 'business-auction',
           component: Auction
+        },
+        {
+          path: 'auctions',
+          name: 'business-auction-list',
+          component: AuctionList
         },
         {
           path: 'info',

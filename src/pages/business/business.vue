@@ -240,7 +240,7 @@
     .content__left {
       position: fixed;
       margin-right: 20px;
-      width: 180px;
+      width: 200px;
       height: 100%;
       text-align: left;
       background-color: #eef1f6;
@@ -248,7 +248,7 @@
 
     .content__right {
       flex: 1;
-      margin-left: 200px;
+      margin-left: 217px;
     }
 
   }

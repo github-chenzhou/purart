@@ -12,26 +12,33 @@
     border
     style="width: 100%">
     <el-table-column
-      label="日期"
+      label="编码"
       width="180">
       <template scope="scope">
-        <el-icon name="time"></el-icon>
-        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+        <!-- <el-icon name="time"></el-icon> -->
+        <span style="margin-left: 10px">{{ scope.row.number }}</span>
       </template>
     </el-table-column>
     <el-table-column
-      label="姓名"
+      label="品类"
       width="180">
       <template scope="scope">
         <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
+          <p>姓名: {{ scope.row.category }}</p>
           <div slot="reference" class="name-wrapper">
-            <el-tag>{{ scope.row.name }}</el-tag>
+            <el-tag>{{ scope.row.category }}</el-tag>
           </div>
         </el-popover>
       </template>
     </el-table-column>
+    <el-table-column
+      label="图片"
+      width="180">
+      <template scope="scope">
+        <span style="margin-left: 10px">{{ scope.row.from }}</span>
+      </template>
+    </el-table-column>
+
     <el-table-column label="操作">
       <template scope="scope">
         <el-button
@@ -52,21 +59,21 @@ export default {
   data () {
     return {
        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          number: 'LOT201710060001',
+          category: '艺术品',
+          pics: []
         }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          number: 'LOT201710060002',
+          category: '艺术品',
+          pics: []
         }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          number: 'LOT201710060002',
+          category: '艺术品',
+          pics: []
         }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          number: 'LOT201710060001',
+          category: '艺术品',
+          pics: []
         }]
     }
   },

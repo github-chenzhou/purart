@@ -4,7 +4,9 @@
 
 
 let api
-let host = 'http://47.95.231.215:8000';
+// let host = 'http://47.95.231.215:8000';
+// let host = 'http://192.168.0.184:8000';
+let host = '';
 
 if (process.env.NODE_ENV === 'production') {
   api = {
@@ -16,7 +18,15 @@ if (process.env.NODE_ENV === 'production') {
       // 拍行信息录入
       'CREAT_BUSINESS': host + '/seller/business_input/',
       // 排场信息录入
-      'CREAT_AUCTION': host + '/seller/sale_input/',
+      'CREAT_AUCTION': host + '/seller/auction_input/',
+      // 七牛uptoken
+      'UPTOKEN': host + '/qiniu/get_upload_token/',
+      // 排场列表
+      'GET_AUCTION_LIST':  host + '/seller/get_auction_list/',
+      // 排场信息
+      'GET_AUCTION':  host + '/seller/get_auction/',
+      // 排场信息删除
+      'DEL_AUCTION':  host + '/seller/del_auction/',
       'TEST': ''
     }
   }
@@ -31,7 +41,15 @@ if (process.env.NODE_ENV === 'production') {
       // 拍行信息录入
       'CREAT_BUSINESS': host + '/seller/business_input/',
       // 排场信息录入
-      'CREAT_AUCTION': host + '/seller/sale_input/',
+      'CREAT_AUCTION': host + '/seller/auction_input/',
+      // 七牛uptoken
+      'UPTOKEN': host + '/qiniu/get_upload_token/',
+      // 排场列表
+      'GET_AUCTION_LIST':  host + '/seller/get_auction_list/',
+      // 排场信息
+      'GET_AUCTION':  host + '/seller/get_auction/',
+       // 排场信息删除
+      'DEL_AUCTION':  host + '/seller/del_auction/',
       'TEST': ''
     }
   }

@@ -62,27 +62,27 @@
       </el-form-item>
       <el-form-item label="商品状况">
         <el-select v-model="product.item_status" placeholder="请选择商品状况">
-          <el-option label="完好" value="jinshu"></el-option>
-          <el-option label="很好" value="beijing2"></el-option>
-          <el-option label="磨损" value="shanghai22"></el-option>
-          <el-option label="裂痕" value="beijing4"></el-option>
-          <el-option label="断裂" value="shanghai5"></el-option>
-          <el-option label="易碎" value="shanghai5"></el-option>
-          <el-option label="背部贴板" value="shanghai5"></el-option>
+          <el-option label="完好" value="hao"></el-option>
+          <el-option label="很好" value="hao"></el-option>
+          <el-option label="磨损" value="hao"></el-option>
+          <el-option label="裂痕" value="hao"></el-option>
+          <el-option label="断裂" value="hao"></el-option>
+          <el-option label="易碎" value="hao"></el-option>
+          <el-option label="背部贴板" value="hao"></el-option>
           </el-select>
       </el-form-item>
       <el-form-item label="来源">
-        <el-input type="textarea" v-model="product.from" placeholder="来源" value=""></el-input>
+        <el-input type="textarea" v-model="product.come_from" placeholder="来源" value=""></el-input>
       </el-form-item>
 
       <el-form-item label="原属国">
         <el-col :span="6">
           <el-select v-model="product.origin" placeholder="商品原属国">
-              <el-option label="中国" value="china"></el-option>
-              <el-option label="美国" value="beijing2"></el-option>
-              <el-option label="非洲" value="shanghai22"></el-option>
-              <el-option label="欧洲" value="beijing4"></el-option>
-              <el-option label="日本" value="shanghai5"></el-option>
+              <el-option label="中国" value="China"></el-option>
+              <el-option label="美国" value="US"></el-option>
+              <el-option label="非洲" value="Africa"></el-option>
+              <el-option label="欧洲" value="Europe"></el-option>
+              <el-option label="日本" value="Japan"></el-option>
           </el-select>
         </el-col>
         <el-col :span="18" class="pl10">
@@ -103,20 +103,20 @@
       <el-form-item label="品类">
           <el-col :span="6">
             <el-select v-model="product.category" placeholder="" @change="">
-              <el-option label="艺术品" value="A.C."></el-option>
-              <el-option label="珠宝" value="B.C."></el-option>
+              <el-option label="艺术品" value="11"></el-option>
+              <el-option label="珠宝" value="222"></el-option>
             </el-select>
           </el-col>
           <el-col :span="6" class="pl10">
             <el-select v-model="product.category2" placeholder="">
-              <el-option label="绘画" value="A.C."></el-option>
-              <el-option label="雕塑" value="B.C."></el-option>
+              <el-option label="绘画" value="111"></el-option>
+              <el-option label="雕塑" value="333"></el-option>
             </el-select>
           </el-col>
           <el-col :span="6" class="pl10">
             <el-select v-model="product.category3" placeholder="">
-              <el-option label="油画" value="A.C."></el-option>
-              <el-option label="素描" value="B.C."></el-option>
+              <el-option label="油画" value="333"></el-option>
+              <el-option label="素描" value="3333"></el-option>
             </el-select>
           </el-col>
 
@@ -129,10 +129,10 @@
 
         <el-form-item label="商品图片">
           <section class="image__list">
-            <div class="pic-view" v-for="(item, index) in product.pics">
+            <div class="pic-view" v-for="(item, index) in pics">
               <img :src="item.thumb" :class="[item.pic ? '' : 'pic--loading']" :data-src="item.pic" :data-index="index"  @load="handlelaodImg" @click="handleScaleImage" />
             </div>
-            <div class="image--add" id="container"><p class="camera" v-show="product.pics.length<9" id="file" ></p></div>
+            <div class="image--add" id="container"><p class="camera" v-show="pics.length<9" id="file" ></p></div>
           </section>
         </el-form-item>
 
@@ -155,7 +155,11 @@ export default {
     return {
       // 图片放大数组
       scaleImages: [],
+      pics: [],
       product: {
+        sale_id: 0,
+        // 排场ID
+        auction_id: 1,
         // 商品编号
         number: 'LOT',
         // 币种
@@ -165,7 +169,7 @@ export default {
         // 市场估值
         valuation: '',
         // 材质
-        material: ['jin', 'zuanshi'],
+        material: [],
         // 尺寸单位
         measurement_unit: 'cm',
         // 长宽高
@@ -177,7 +181,7 @@ export default {
         // 来源
         come_from: '',
         // 所属国
-        origin: 'china',
+        origin: 'China',
         // 所属国地区
         origin2: '',
         // 公元前 B.C. 公元 A.C.
@@ -230,6 +234,7 @@ export default {
     }
   },
   created() {
+    this.product.sale_id = +this.$route.params.id;
   },
   mounted() {
     setTimeout(()=> {
@@ -251,18 +256,18 @@ export default {
           // 在初始化时，uptoken, uptoken_url, uptoken_func 三个参数中必须有一个被设置
           // 切如果提供了多个，其优先级为 uptoken > uptoken_url > uptoken_func
           // 其中 uptoken 是直接提供上传凭证，uptoken_url 是提供了获取上传凭证的地址，如果需要定制获取 uptoken 的过程则可以设置 uptoken_func
-          uptoken : 'XbBjw6RmDf-8tTJ8vwVjI6fR1sOboimKSfnRK6Jf:dMNJ7ArtvCHDOD-PyXZTPD8MXYI=:eyJzY29wZSI6InlrdGZyb250ZW5kIiwiZGVhZGxpbmUiOjE1MDcwMjAwODB9', // uptoken 是上传凭证，由其他程序生成
-          // uptoken_url: '/uptoken',         // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
-          uptoken_func: function(file){    // 在需要获取 uptoken 时，该方法会被调用
-            // do something
-            return uptoken;
-          },
+          // uptoken : 'eh7qlOkZU_ixsQrWEMLlZlro-HwqIYwH63sH7iCq:z0ipLRhUTEj9vg0YYJXpiNro6vw=:eyJzY29wZSI6InN1cGVyZmxlYSIsImRlYWRsaW5lIjoxNTA3MzUyNDE3fQ==', // uptoken 是上传凭证，由其他程序生成
+          uptoken_url: API.business.UPTOKEN,   // Ajax 请求 uptoken 的 Url，**强烈建议设置**（服务端提供）
+          // uptoken_func: function(file){    // 在需要获取 uptoken 时，该方法会被调用
+          //   // do something
+          //   return uptoken;
+          // },
           get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的 uptoken
           // downtoken_url: '/downtoken',
           // Ajax请求downToken的Url，私有空间时使用,JS-SDK 将向该地址POST文件的key和domain,服务端返回的JSON必须包含`url`字段，`url`值为该文件的下载地址
           // unique_names: true,              // 默认 false，key 为文件名。若开启该选项，JS-SDK 会为每个文件自动生成key（文件名）
           // save_key: true,                  // 默认 false。若在服务端生成 uptoken 的上传策略中指定了 `save_key`，则开启，SDK在前端将不对key进行任何处理
-          domain: 'http://sfe.ykt.io/',     // bucket 域名，下载资源时用到，如：'http://xxx.bkt.clouddn.com/' **必需**
+          domain: 'http://ox4oktbuv.bkt.clouddn.com/',     // bucket 域名，下载资源时用到，如：'http://xxx.bkt.clouddn.com/' **必需**
           container: 'container',             // 上传区域 DOM ID，默认是 browser_button 的父元素，
           max_file_size: '100mb',             // 最大文件体积限制
           // flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入 flash,相对路径
@@ -271,6 +276,10 @@ export default {
           drop_element: 'container',          // 拖曳上传区域元素的 ID，拖曳文件或文件夹后可触发上传
           chunk_size: '4mb',                  // 分块上传时，每块的体积
           auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传,
+          // 图片硕放
+          resize: {
+            quality: 60
+          },
           //x_vars : {
           //    自定义变量，参考http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html
           //    'time' : function(up,file) {
@@ -283,7 +292,7 @@ export default {
               // do something with 'size'
                 //        return size;
           //    }
-          //},
+          // },
           init: {
             'FilesAdded': function(up, files) {
               plupload.each(files, function(file) {
@@ -296,7 +305,7 @@ export default {
                   let data = e.target.result;
 
                   // console.log(data);
-                  self.product.pics.push({
+                  self.pics.push({
                     id: file.id,
                     pic: data,
                     thumb: data
@@ -323,29 +332,29 @@ export default {
                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
 
               var domain = up.getOption('domain');
-              var res = JSON.parse(info);
+              var res = JSON.parse(info.response);
               // 获取上传成功后的文件的Url
               var sourceLink = domain + res.key;
 
-              var oPic = {
-                pic: sourceLink,
-                thumb: sourceLink + '?imageView2/1/w/300/h/300'
-              };
+              // var oPic = {
+              //   pic: sourceLink,
+              //   thumb: sourceLink + '?imageView2/1/w/300/h/300'
+              // };
 
               let index = 1;
               let id = file.id;
 
               // 上传图片的下标
-              self.product.pics.forEach( (item, i) => {
+              self.pics.forEach( (item, i) => {
                 if(id === item.id) {
                   index = i;
                   return ;
                 }
               });
 
-              self.product.pics.splice(index, 1, oPic);
+              // self.product.pics.splice(index, 1, oPic);
 
-              // self.product.pics.push(oPic);
+              self.product.pics.push(sourceLink);
             },
             'Error': function(up, err, errTip) {
                //上传出错时,处理相关的事情
@@ -531,6 +540,8 @@ export default {
       padding-bottom: 31.733%;
       border-radius: 2px;
       border: 1px solid #C8C8C8;
+
+      cursor: pointer;
 
       .camera {
         z-index: 1;

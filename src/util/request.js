@@ -67,7 +67,8 @@ export default {
     // , { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }}
 
     return axios
-      .post(url, params)
+      // .post(url, params, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }})
+      .post(url, params, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }})
       .then(function (response, data) {
         return response
       })

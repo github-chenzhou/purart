@@ -15,9 +15,9 @@
       </el-form-item>
       <el-form-item label="佣金比例">
         <el-select v-model="auction.commission_rate" filterable allow-create placeholder="请选择佣金比例">
-          <el-option label="99:1" value="jinshu"></el-option>
-          <el-option label="98:2" value="beijing2"></el-option>
-          <el-option label="100:2" value="shanghai22"></el-option>
+          <el-option label="99:1" value="1"></el-option>
+          <el-option label="98:2" value="2"></el-option>
+          <el-option label="100:2" value="3"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="拍卖日期">
@@ -39,6 +39,9 @@
 </template>
 
 <script>
+
+import moment from 'moment';
+
 export default {
   name: 'business-auction',
   props: {
@@ -47,6 +50,8 @@ export default {
   data () {
     return {
       auction: {
+        auction_id: 0,
+        business_id: 1,
         summary: '',
         commission_rate: '',
         date: '',
@@ -54,18 +59,70 @@ export default {
       }
     }
   },
+  created() {
+    this.auction.auction_id = +this.$route.params.id;
+
+    if(this.auction.auction_id) {
+      this.getAuction(this.auction.auction_id);
+    }
+  },
   methods: {
-    handelconfirm() {
-      // let URL = 'http://47.95.231.215:8000/seller/auction_input/';
-      let URL = API.business.CREAT_BUSINESS || '/seller/sale_input/';
+    /*
+     * @method 图片放大
+     * @param
+     */
+    getAuction(auction_id) {
+      let URL = API.business.GET_AUCTION;
+      let params = {
+        auction_id: auction_id
+      };
 
       // auction
-      return request.post(URL, this.auction)
+      return request.get(URL, params)
         .then((res) => {
           if(res && res.data) {
             let data = res.data;
 
             console.log(res);
+
+            this.auction = data;
+            this.auction.date = moment(this.auction.date, "YYYY-MM-DD HH-mm-ss");
+            this.auction.time = moment(this.auction.date, "YYYY-MM-DD HH-mm-ss");
+
+            return data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    handelconfirm() {
+      // let URL = 'http://47.95.231.215:8000/seller/auction_input/';
+      let URL = API.business.CREAT_AUCTION;
+      let params = {
+        auction_id: this.auction.auction_id,
+        business_id: this.auction.business_id,
+        summary: this.auction.summary,
+        commission_rate: this.auction.commission_rate,
+        date: this.auction.date
+      };
+
+      params['date'] = moment(this.auction.date).format('YYYY-MM-DD') + ' ' + moment(this.auction.time).format('HH-mm-ss');
+
+      console.log(params);
+
+      // auction
+      return request.post(URL, params)
+        .then((res) => {
+          if(res && res.data) {
+            let data = res.data;
+
+            this.$message({
+              showClose: true,
+              message: '排场信息创建成功',
+              type: 'success'
+            });
 
             return data;
           }
