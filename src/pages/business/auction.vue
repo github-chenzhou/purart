@@ -51,6 +51,8 @@ export default {
     return {
       auction: {
         auction_id: 0,
+        // 排场编码
+        auction_num: '',
         business_id: 1,
         summary: '',
         commission_rate: '',

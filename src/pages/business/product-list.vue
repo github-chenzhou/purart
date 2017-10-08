@@ -24,7 +24,7 @@
       width="180">
       <template scope="scope">
         <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.category }}</p>
+          <!-- <p>姓名: {{ scope.row.category }}</p> -->
           <div slot="reference" class="name-wrapper">
             <el-tag>{{ scope.row.category }}</el-tag>
           </div>
@@ -35,7 +35,7 @@
       label="图片"
       width="180">
       <template scope="scope">
-        <span style="margin-left: 10px">{{ scope.row.from }}</span>
+        <img style="margin-left: 10px" :src="scope.row.pics[0]" v-if="scope.row.pics.length" />
       </template>
     </el-table-column>
 
@@ -43,7 +43,7 @@
       <template scope="scope">
         <el-button
           size="small"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          @click="handleEdit(scope.$index, scope.row)"><router-link :to="'/product/' + scope.row.sale_id" tag="span">编辑</router-link></el-button>
         <el-button
           size="small"
           type="danger"
@@ -58,32 +58,97 @@ export default {
   name: 'business-production-list',
   data () {
     return {
+      auction_id: 0,
        tableData: [{
-          number: 'LOT201710060001',
-          category: '艺术品',
-          pics: []
-        }, {
-          number: 'LOT201710060002',
-          category: '艺术品',
-          pics: []
-        }, {
-          number: 'LOT201710060002',
-          category: '艺术品',
-          pics: []
-        }, {
+
           number: 'LOT201710060001',
           category: '艺术品',
           pics: []
         }]
     }
   },
+  created() {
+    this.auction_id = +this.$route.params.id;
+
+    if(this.auction_id) {
+      this.getProductList(this.auction_id);
+    }
+  },
   methods: {
+    /*
+     * @method 根据排场读取拍品列表
+     * @param
+     */
+    getProductList(auction_id) {
+      let URL = API.business.SALE_LIST;
+      let params = {
+        auction_id: auction_id
+      };
+
+      // auction
+      return request.get(URL, params)
+        .then((res) => {
+          if(res && res.data) {
+            let data = res.data;
+            console.log(res);
+
+            this.tableData = data.list;
+
+            return data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+
+      let URL = API.business.DEL_SALE;
+      let params = {
+        'sale_id': row.sale_id
+      }
+
+      this.$confirm('确认删除拍品?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          return request.post(URL, params)
+            .then((res) => {
+            if(res && res.data) {
+              let data = res.data;
+
+              console.log(res);
+              // 删除排场展示信息
+              this.tableData.splice(index, 1);
+
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+
+              return data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+    },
     handelconfirm() {
       // let URL = 'http://47.95.231.215:8000/seller/auction_input/';
       let URL = API.business.CREAT_BUSINESS || '/seller/sale_input/';

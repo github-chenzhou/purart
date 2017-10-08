@@ -1,5 +1,5 @@
 /*
- * @page：商家排场列表
+ * @page：商家拍场列表
  * @author: chenzhou
  * @update: 2017.10.07
  * @desc
@@ -12,10 +12,17 @@
     border
     style="width: 100%">
     <el-table-column
-      label="排场编码"
+      label="拍场编码"
       width="280">
       <template scope="scope">
         <span style="margin-left: 10px">{{ scope.row.auction_num }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="拍品列表"
+      width="120">
+      <template scope="scope">
+        <span><router-link :to="'/products/' + scope.row.auction_id" tag="span">拍品列表</router-link></span>
       </template>
     </el-table-column>
     <el-table-column label="操作">
@@ -27,6 +34,9 @@
           size="small"
           type="danger"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        <el-button
+          size="small"
+          @click="handleEdit(scope.$index, scope.row)"><router-link :to="{ name: 'business-product', params: { id: 0 }, query: { auction_id: scope.row.auction_id }}" tag="span">新增拍品</router-link></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -38,15 +48,6 @@ export default {
   data () {
     return {
        tableData: [{
-          auction_id: '10001',
-          auction_num: 'LOT201710060001'
-        }, {
-          auction_id: '10001',
-          auction_num: 'LOT201710060002'
-        }, {
-          auction_id: '10001',
-          auction_num: 'LOT201710060002'
-        }, {
           auction_id: '10001',
           auction_num: 'LOT201710060001'
         }]

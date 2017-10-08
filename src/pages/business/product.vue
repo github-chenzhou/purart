@@ -2,10 +2,10 @@
   <!-- 拍品信息 -->
   <div class="business__product">
     <el-form class="product__form" ref="form" :model="product" label-width="80px">
-      <el-form-item label="号码">
+      <el-form-item label="号码" v-show="product.sale_id">
         <el-input v-model="product.number" placeholder="LOT" value=""></el-input>
       </el-form-item>
-      <el-form-item label="起拍价格">
+      <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'}]">
         <el-col :span="3">
           <el-select v-model="product.currency" placeholder="">
             <el-option label="￥" value="￥"></el-option>
@@ -14,8 +14,8 @@
             <el-option label="€" value="€"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="18" class="pl10">
-          <el-input v-model="product.price" placeholder="起拍价格" value=""></el-input>
+        <el-col :span="10" class="pl10">
+          <el-input v-model="product.price" placeholder="起拍价格" value="" ></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="市场估价">
@@ -27,7 +27,7 @@
             <el-option label="€" value="€"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="18" class="pl10">
+        <el-col :span="10" class="pl10">
           <el-input v-model="product.valuation" placeholder="市场估价" value=""></el-input>
         </el-col>
       </el-form-item>
@@ -47,42 +47,53 @@
         </el-select>
       </el-form-item>
       <el-form-item label="长宽高">
-        <el-col :span="4">
+        <el-col :span="3">
           <el-select v-model="product.measurement_unit" placeholder="">
             <el-option label="cm" value="cm"></el-option>
             <el-option label="inch" value="inch"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="18" class="pl10">
+        <el-col :span="10" class="pl10">
           <el-input v-model="product.inch" placeholder="x*y*z" value=""></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="重量">
-        <el-input v-model="product.weight" placeholder="重量" value=""></el-input>
+        <el-col :span="3">
+          <el-select v-model="product.weight_unit" placeholder="">
+            <el-option label="g" value="g"></el-option>
+            <el-option label="lb" value="lb"></el-option>
+            <el-option label="oz" value="oz"></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="10" class="pl10">
+          <el-input v-model="product.weight" placeholder="重量" value=""></el-input>
+        </el-col>
+        <!-- <el-input v-model="product.weight" placeholder="重量" value=""></el-input> -->
       </el-form-item>
       <el-form-item label="商品状况">
         <el-select v-model="product.item_status" placeholder="请选择商品状况">
-          <el-option label="完好" value="hao"></el-option>
-          <el-option label="很好" value="hao"></el-option>
-          <el-option label="磨损" value="hao"></el-option>
-          <el-option label="裂痕" value="hao"></el-option>
-          <el-option label="断裂" value="hao"></el-option>
-          <el-option label="易碎" value="hao"></el-option>
-          <el-option label="背部贴板" value="hao"></el-option>
-          </el-select>
+          <el-option label="完好" value="完好"></el-option>
+          <el-option label="很好" value="很好"></el-option>
+          <el-option label="磨损" value="磨损"></el-option>
+          <el-option label="裂痕" value="裂痕"></el-option>
+          <el-option label="断裂" value="断裂"></el-option>
+          <el-option label="易碎" value="易碎"></el-option>
+          <el-option label="背部贴板" value="背部贴板"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="来源">
+      <!-- 暂时去掉放在运营后台 -->
+      <!--  <el-form-item label="来源">
         <el-input type="textarea" v-model="product.come_from" placeholder="来源" value=""></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="原属国">
         <el-col :span="6">
           <el-select v-model="product.origin" placeholder="商品原属国">
-              <el-option label="中国" value="China"></el-option>
-              <el-option label="美国" value="US"></el-option>
-              <el-option label="非洲" value="Africa"></el-option>
-              <el-option label="欧洲" value="Europe"></el-option>
-              <el-option label="日本" value="Japan"></el-option>
+            <el-option label="中国" value="中国"></el-option>
+            <el-option label="美国" value="美国"></el-option>
+            <el-option label="非洲" value="非洲"></el-option>
+            <el-option label="欧洲" value="欧洲"></el-option>
+            <el-option label="日本" value="日本"></el-option>
           </el-select>
         </el-col>
         <el-col :span="18" class="pl10">
@@ -92,8 +103,8 @@
       <el-form-item label="年份">
         <el-col :span="6">
           <el-select v-model="product.year" placeholder="">
-              <el-option label="公元" value="A.C."></el-option>
-              <el-option label="公元前" value="B.C."></el-option>
+              <el-option label="公元" value="公元"></el-option>
+              <el-option label="公元前" value="公元前"></el-option>
           </el-select>
         </el-col>
         <el-col :span="18" class="pl10">
@@ -101,24 +112,31 @@
         </el-col>
       </el-form-item>
       <el-form-item label="品类">
-          <el-col :span="6">
+          <el-col :span="12">
             <el-select v-model="product.category" placeholder="" @change="">
-              <el-option label="艺术品" value="11"></el-option>
-              <el-option label="珠宝" value="222"></el-option>
+              <el-option label="玩具" value="玩具"></el-option>
+              <el-option label="画意" value="画意"></el-option>
+              <el-option label="家居" value="家居"></el-option>
+              <el-option label="珠宝" value="珠宝"></el-option>
+              <el-option label="礼乐" value="礼乐"></el-option>
+              <el-option label="影像" value="影像"></el-option>
+              <el-option label="时尚" value="时尚"></el-option>
+              <el-option label="收藏" value="收藏"></el-option>
+              <el-option label="古酒" value="古酒"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6" class="pl10">
+         <!--  <el-col :span="6" class="pl10">
             <el-select v-model="product.category2" placeholder="">
-              <el-option label="绘画" value="111"></el-option>
-              <el-option label="雕塑" value="333"></el-option>
+              <el-option label="绘画" value="绘画"></el-option>
+              <el-option label="雕塑" value="雕塑"></el-option>
             </el-select>
           </el-col>
           <el-col :span="6" class="pl10">
             <el-select v-model="product.category3" placeholder="">
-              <el-option label="油画" value="333"></el-option>
-              <el-option label="素描" value="3333"></el-option>
+              <el-option label="油画" value="油画"></el-option>
+              <el-option label="素描" value="素描"></el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
 
         </el-form-item>
 
@@ -130,7 +148,7 @@
         <el-form-item label="商品图片">
           <section class="image__list">
             <div class="pic-view" v-for="(item, index) in pics">
-              <img :src="item.thumb" :class="[item.pic ? '' : 'pic--loading']" :data-src="item.pic" :data-index="index"  @load="handlelaodImg" @click="handleScaleImage" />
+              <img :src="item" :data-src="item" :data-index="index" @load="handlelaodImg" @click="handleScaleImage" />
             </div>
             <div class="image--add" id="container"><p class="camera" v-show="pics.length<9" id="file" ></p></div>
           </section>
@@ -159,9 +177,9 @@ export default {
       product: {
         sale_id: 0,
         // 排场ID
-        auction_id: 1,
+        auction_id: 3,
         // 商品编号
-        number: 'LOT',
+        number: '',
         // 币种
         currency: '￥',
         // 起拍价格
@@ -174,27 +192,31 @@ export default {
         measurement_unit: 'cm',
         // 长宽高
         inch: '',
+        // 商品重量单位
+        weight_unit: 'g',
         // 商品重量
         weight: '',
         // 商品状况
-        item_status: '',
+        item_status: '完好',
         // 来源
         come_from: '',
         // 所属国
-        origin: 'China',
+        origin: '中国',
         // 所属国地区
         origin2: '',
         // 公元前 B.C. 公元 A.C.
-        year: 'A.C.',
+        year: '公元',
         // 年份
         year2: '',
         // 类目
         // 一级类目
-        category: '',
+        category: '画意',
         // 二级类目
         category2: '',
         // 三级类目
         category3: '',
+        // 作者
+        author: '',
 
         // 商品图片
         pics:[]
@@ -203,38 +225,76 @@ export default {
        {
           label: '金属',
           options: [{
-            value: 'jin',
+            value: '金',
             label: '金'
           }, {
-            value: 'yin',
+            value: '银',
             label: '银'
           },{
-            value: 'tie',
+            value: '铁',
             label: '铁'
           },{
-            value: 'tong',
+            value: '铜',
             label: '铜'
           }]
         }, {
           label: '石材',
           options: [{
-            value: 'zuanshi',
+            value: '钻石',
             label: '钻石'
           }, {
-            value: 'dalishi',
+            value: '大理石',
             label: '大理石'
           }, {
-            value: 'Guangzhou',
+            value: '玉石',
             label: '玉石'
           }, {
-            value: 'Dalian',
+            value: '水晶',
             label: '水晶'
+          }]
+        },{
+          label: '布料',
+          options: [{
+            value: '锦',
+            label: '锦'
+          }, {
+            value: '罗',
+            label: '罗'
+          }, {
+            value: '绸',
+            label: '绸'
+          }, {
+            value: '缎',
+            label: '缎'
+          }]
+        },{
+          label: '其它',
+          options: [{
+            value: '木头',
+            label: '木头'
+          }, {
+            value: '纸',
+            label: '纸'
+          }, {
+            value: '皮革',
+            label: '皮革'
+          }, {
+            value: '玻璃',
+            label: '玻璃'
+          }, {
+            value: '毛料',
+            label: '毛料'
           }]
         }]
     }
   },
   created() {
     this.product.sale_id = +this.$route.params.id;
+    this.product.auction_id = +this.$route.query.auction_id;
+
+    if(this.product.sale_id) {
+      this.getProduct(this.product.sale_id);
+    }
   },
   mounted() {
     setTimeout(()=> {
@@ -242,6 +302,33 @@ export default {
     }, 1000)
   },
   methods: {
+    /*
+     * @method 根据排场读取拍品列表
+     * @param
+     */
+    getProduct(sale_id) {
+      let URL = API.business.GET_SALE;
+      let params = {
+        sale_id: sale_id
+      };
+
+      // auction
+      return request.get(URL, params)
+        .then((res) => {
+          if(res && res.data) {
+            let data = res.data;
+            console.log(res);
+
+            this.product = data;
+            this.pics = this.product.pics;
+
+            return data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     /*
      * @method 七牛上传初始化
      * @param
@@ -280,19 +367,6 @@ export default {
           resize: {
             quality: 60
           },
-          //x_vars : {
-          //    自定义变量，参考http://developer.qiniu.com/docs/v6/api/overview/up/response/vars.html
-          //    'time' : function(up,file) {
-          //        var time = (new Date()).getTime();
-                   // do something with 'time'
-          //        return time;
-          //    },
-          //    'size' : function(up,file) {
-          //        var size = file.size;
-              // do something with 'size'
-                //        return size;
-          //    }
-          // },
           init: {
             'FilesAdded': function(up, files) {
               plupload.each(files, function(file) {
@@ -305,11 +379,13 @@ export default {
                   let data = e.target.result;
 
                   // console.log(data);
-                  self.pics.push({
-                    id: file.id,
-                    pic: data,
-                    thumb: data
-                  });
+                  // self.pics.push({
+                  //   id: file.id,
+                  //   pic: data,
+                  //   thumb: data
+                  // });
+
+                  self.pics.push(data);
                 };
                 reader.readAsDataURL(file.getNative());
 
@@ -486,8 +562,7 @@ export default {
     },
 
     handelconfirm() {
-      let URL = API.business.CREAT_PRODUCT || 'http://47.95.231.215:8000/seller/sale_input/';
-      // let URL = '/seller/sale_input/';
+      let URL = API.business.CREAT_PRODUCT;
 
       // product
       return request.post(URL, this.product)
@@ -496,6 +571,60 @@ export default {
             let data = res.data;
 
             console.log(res);
+
+            this.$message({
+              showClose: true,
+              message: '拍品创建成功',
+              type: 'success'
+            });
+
+            this.product = {
+              sale_id: 0,
+              // 排场ID
+              auction_id: 3,
+             // 商品编号
+             number: '',
+        // 币种
+        currency: '￥',
+        // 起拍价格
+        price: '',
+        // 市场估值
+        valuation: '',
+        // 材质
+        material: [],
+        // 尺寸单位
+        measurement_unit: 'cm',
+        // 长宽高
+        inch: '',
+        // 商品重量单位
+        weight_unit: 'g',
+        // 商品重量
+        weight: '',
+        // 商品状况
+        item_status: '完好',
+        // 来源
+        come_from: '',
+        // 所属国
+        origin: '中国',
+        // 所属国地区
+        origin2: '',
+        // 公元前 B.C. 公元 A.C.
+        year: '公元',
+        // 年份
+        year2: '',
+        // 类目
+        // 一级类目
+        category: '画意',
+        // 二级类目
+        category2: '',
+        // 三级类目
+        category3: '',
+        // 作者
+        author: '',
+
+        // 商品图片
+        pics:[]
+            }
 
             return data;
           }

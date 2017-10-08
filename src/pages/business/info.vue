@@ -16,11 +16,11 @@
       <el-form-item label="拍行地址">
         <el-col :span="6">
           <el-select v-model="business.address" placeholder="请选拍行地址">
-            <el-option label="中国" value="China"></el-option>
-            <el-option label="美国" value="US"></el-option>
-            <el-option label="非洲" value="Africa"></el-option>
-            <el-option label="欧洲" value="Europe"></el-option>
-            <el-option label="日本" value="Japan"></el-option>
+            <el-option label="中国" value="中国"></el-option>
+            <el-option label="美国" value="美国"></el-option>
+            <el-option label="非洲" value="非洲"></el-option>
+            <el-option label="欧洲" value="欧洲"></el-option>
+            <el-option label="日本" value="日本"></el-option>
           </el-select>
         </el-col>
         <el-col :span="18" class="pl10">
@@ -68,7 +68,7 @@ export default {
         // 拍行名称
         name: '',
         // 拍行地址
-        address: '',
+        address: '中国',
         address2: '',
         // 街道
         street: '',

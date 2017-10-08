@@ -17,6 +17,8 @@ const Auction = resolve => require(['@/pages/business/auction'], resolve)
 const AuctionList = resolve => require(['@/pages/business/auction-list'], resolve)
 // 拍行组件
 const BusinessInfo = resolve => require(['@/pages/business/info'], resolve)
+// 拍场直播
+const AuctionLive = resolve => require(['@/pages/business/auction-live'], resolve)
 
 
 Vue.use(Router)
@@ -37,7 +39,7 @@ const businessRouter = new Router({
           component: Product
         },
         {
-          path: 'products',
+          path: 'products/:id',
           name: 'business-product-list',
           component: ProductList
         },
@@ -55,6 +57,11 @@ const businessRouter = new Router({
           path: 'info',
           name: 'business-info',
           component: BusinessInfo
+        },
+        {
+          path: 'live/:id',
+          name: 'business-auction-live',
+          component: AuctionLive
         }
       ]
     }

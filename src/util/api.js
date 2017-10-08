@@ -27,6 +27,12 @@ if (process.env.NODE_ENV === 'production') {
       'GET_AUCTION':  host + '/seller/get_auction/',
       // 排场信息删除
       'DEL_AUCTION':  host + '/seller/del_auction/',
+      // 拍品列表
+      'SALE_LIST':  host + '/seller/get_sale_list/',
+      // 拍品信息
+      'GET_SALE':  host + '/seller/get_sale/',
+      // 删除拍品信息
+      'DEL_SALE':  host + '/seller/del_sale/',
       'TEST': ''
     }
   }
@@ -50,6 +56,12 @@ if (process.env.NODE_ENV === 'production') {
       'GET_AUCTION':  host + '/seller/get_auction/',
        // 排场信息删除
       'DEL_AUCTION':  host + '/seller/del_auction/',
+      // 拍品列表
+      'SALE_LIST':  host + '/seller/get_sale_list/',
+       // 拍品信息
+      'GET_SALE':  host + '/seller/get_sale/',
+      // 删除拍品信息
+      'DEL_SALE':  host + '/seller/del_sale/',
       'TEST': ''
     }
   }
