@@ -15,8 +15,8 @@
     <div class="live__products">
       <div class="carousel">
         <el-carousel :interval="4500" type="card" height="200px">
-          <el-carousel-item v-for="item in product.pics" :key="item">
-            <div class="image__wrapper"><img class="live--image" :src="item" :alt="product.number" @load="handlelaodImg" /></div>
+          <el-carousel-item v-for="(item, index) in product.pics" :key="item">
+            <div class="image__wrapper"><img class="live--image" :data-index="index" :src="item" :alt="product.number" @load="handlelaodImg" @click="handleScaleImage" /></div>
           </el-carousel-item>
         </el-carousel>
         <div>{{ product.number }}</div>
@@ -222,6 +222,7 @@ export default {
       // .pic-view
       // let parentEl = target.parentNode;
       let src = target.src;
+      let index = +target.dataset.index || 0;
 
       let width = target.naturalWidth || target.width;
       let height = target.naturalHeight || target.height;
@@ -229,8 +230,61 @@ export default {
       let targetWidth = rate * 300;
 
       target.style.width = targetWidth + 'px';
-    }
 
+      let item = { src: src, w: width, h: height };
+      this.scaleImages[index] = item;
+    },
+
+    /*
+     * @method 图片缩放
+     * @param
+     */
+    handleScaleImage(evt) {
+      let targetEl = evt.target;
+      let src = targetEl.src;
+      let pswpElement = document.querySelector('.J_pswp');
+      let index = +targetEl.dataset.index || 0;
+      let items = this.scaleImages;
+
+      let options = {
+        index: index,
+        loop: false,
+        maxSpreadZoom: 5,
+        showAnimationDuration: 300,
+        hideAnimationDuration: 300,
+        showHideOpacity: true,
+
+        closeEl: false,
+        captionEl: false,
+        fullscreenEl: false,
+        zoomEl: false,
+        shareEl: false,
+        counterEl: false,
+        arrowEl: false,
+        preloaderEl: false,
+
+        getThumbBoundsFn: function(index) {
+          // find thumbnail element
+          var thumbnail = targetEl;
+
+          // get window scroll Y
+          var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+          // optionally get horizontal scroll
+
+          // get position of element relative to viewport
+          var rect = thumbnail.getBoundingClientRect();
+
+          // w = width
+          return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+        }
+      };
+
+      // Initializes and opens PhotoSwipe
+      let gallery = this.gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+      gallery.init();
+
+    }
   }
 }
 </script>

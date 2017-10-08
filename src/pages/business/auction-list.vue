@@ -27,16 +27,10 @@
     </el-table-column>
     <el-table-column label="操作">
       <template scope="scope">
-        <el-button
-          size="small"
-          @click="handleEdit(scope.$index, scope.row)"><router-link :to="'/auction/' + scope.row.auction_id" tag="span">编辑</router-link></el-button>
-        <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        <el-button
-          size="small"
-          @click="handleEdit(scope.$index, scope.row)"><router-link :to="{ name: 'business-product', params: { id: 0 }, query: { auction_id: scope.row.auction_id }}" tag="span">新增拍品</router-link></el-button>
+        <el-button size="small"><router-link :to="'/auction/' + scope.row.auction_id" tag="span">编辑</router-link></el-button>
+        <el-button size="small"><router-link :to="{ name: 'business-product', params: { id: 0 }, query: { auction_id: scope.row.auction_id }}" tag="span">新增拍品</router-link></el-button>
+        <el-button size="small"><router-link :to="{ name: 'business-auction-live', params: { id: scope.row.auction_id }}" tag="span">拍场现场</router-link></el-button>
+        <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>

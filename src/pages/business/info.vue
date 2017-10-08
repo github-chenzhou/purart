@@ -48,7 +48,7 @@
 
       <el-form-item>
         <el-button type="primary" @click="handelconfirm" >确定</el-button>
-        <el-button>取消</el-button>
+        <el-button>重置</el-button>
       </el-form-item>
 
     </el-form>

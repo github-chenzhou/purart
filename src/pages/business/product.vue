@@ -3,7 +3,8 @@
   <div class="business__product">
     <el-form class="product__form" ref="form" :model="product" label-width="80px">
       <el-form-item label="号码" v-show="product.sale_id">
-        <el-input v-model="product.number" placeholder="LOT" value=""></el-input>
+        <!-- <el-input v-model="product.number" placeholder="LOT" value=""></el-input> -->
+        <p class="">{{ product.number }}</p>
       </el-form-item>
       <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'}]">
         <el-col :span="3">
@@ -156,7 +157,7 @@
 
         <el-form-item>
           <el-button type="primary" @click="handelconfirm">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button>重置</el-button>
         </el-form-item>
 
       </el-form>

@@ -13,7 +13,7 @@
     style="width: 100%">
     <el-table-column
       label="编码"
-      width="190">
+      width="210">
       <template scope="scope">
         <!-- <el-icon name="time"></el-icon> -->
         <span style="margin-left: 10px">{{ scope.row.number }}</span>
@@ -23,19 +23,14 @@
       label="品类"
       width="180">
       <template scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <!-- <p>姓名: {{ scope.row.category }}</p> -->
-          <div slot="reference" class="name-wrapper">
-            <el-tag>{{ scope.row.category }}</el-tag>
-          </div>
-        </el-popover>
+        <el-tag>{{ scope.row.category }}</el-tag>
       </template>
     </el-table-column>
     <el-table-column
       label="图片"
-      width="180">
+      width="120">
       <template scope="scope">
-        <img style="margin-left: 10px" :src="scope.row.pics[0]" v-if="scope.row.pics.length" />
+        <img :src="scope.row.pics[0]" v-if="scope.row.pics.length" />
       </template>
     </el-table-column>
 
