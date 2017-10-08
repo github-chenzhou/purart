@@ -13,7 +13,7 @@
     style="width: 100%">
     <el-table-column
       label="编码"
-      width="180">
+      width="190">
       <template scope="scope">
         <!-- <el-icon name="time"></el-icon> -->
         <span style="margin-left: 10px">{{ scope.row.number }}</span>

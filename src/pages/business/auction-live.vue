@@ -14,17 +14,17 @@
     <!-- 排场拍品列表 -->
     <div class="live__products">
       <div class="carousel">
-        <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3>{{ item }}</h3>
+        <el-carousel :interval="4500" type="card" height="200px">
+          <el-carousel-item v-for="item in product.pics" :key="item">
+            <div class="image__wrapper"><img class="live--image" :src="item" :alt="product.number" @load="handlelaodImg" /></div>
           </el-carousel-item>
         </el-carousel>
-        <div>LOT2017100800003</div>
+        <div>{{ product.number }}</div>
       </div>
       <!-- 拍品状态操作 -->
       <div class="product__status">
         <el-button type="" @click="handelstart">开始</el-button>
-        <el-button type="" @click="handelpurse">暂停</el-button>
+        <el-button type="" @click="handelpause">暂停</el-button>
         <el-button type="primary" @click="handelconfirm">成交</el-button>
         <el-button type="" @click="">下一个</el-button>
       </div>
@@ -47,7 +47,7 @@
       </el-form-item>
       <el-form-item label="现场价格">
         <el-col :span="10" class="pl10">
-          <el-input v-model="product.valuation" placeholder="现场价格" value=""></el-input>
+          <el-input v-model="product.price" placeholder="现场价格" value=""></el-input>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelconfirm">提交</el-button>
@@ -55,7 +55,7 @@
       </el-form-item>
       <el-form-item label="当前加价幅">
         <el-col :span="10" class="pl10">
-          <el-input v-model="product.valuation" placeholder="当前加价幅" value=""></el-input>
+          <el-input v-model="product.rr" placeholder="当前加价幅" value=""></el-input>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelconfirm">确认</el-button>
@@ -64,7 +64,7 @@
 
       <el-form-item label="现场人数">
         <el-col :span="10" class="pl10">
-          <el-input v-model="product.valuation" placeholder="现场人数" value=""></el-input>
+          <el-input v-model="product.w" placeholder="现场人数" value=""></el-input>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelconfirm">提交</el-button>
@@ -79,7 +79,7 @@
 import moment from 'moment';
 
 export default {
-  name: 'business-product',
+  name: 'business-live',
   props: {
     isCollapse: true
   },
@@ -89,7 +89,24 @@ export default {
       curr_time: '',
       // 图片放大数组
       scaleImages: [],
-      pics: [],
+      pics: [
+        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
+        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n14tnrip17fo11cm1l2qc.jpeg",
+        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n5af1qp41r3f5lojcld.jpeg",
+        "http://ox4oktbuv.bkt.clouddn.com/o_1brt9nicb12aro15b1ifqk101mg.jpeg"
+      ],
+      products: [
+        {
+          sale_id: 1001,
+          currency: '￥',
+          number: 'LOT2017100800003',
+          price: '3000',
+          pics:["http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
+            "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n14tnrip17fo11cm1l2qc.jpeg",
+            "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n5af1qp41r3f5lojcld.jpeg",
+            "http://ox4oktbuv.bkt.clouddn.com/o_1brt9nicb12aro15b1ifqk101mg.jpeg"]
+        }
+      ],
       product: {
         sale_id: 0,
         // 排场ID
@@ -100,59 +117,25 @@ export default {
         currency: '￥',
         // 起拍价格
         price: '',
-        // 市场估值
-        valuation: '',
-        // 材质
-        material: [],
-        // 尺寸单位
-        measurement_unit: 'cm',
-        // 长宽高
-        inch: '',
-        // 商品重量单位
-        weight_unit: 'g',
-        // 商品重量
-        weight: '',
-        // 商品状况
-        item_status: '完好',
-        // 来源
-        come_from: '',
-        // 所属国
-        origin: '中国',
-        // 所属国地区
-        origin2: '',
-        // 公元前 B.C. 公元 A.C.
-        year: '公元',
-        // 年份
-        year2: '',
-        // 类目
-        // 一级类目
-        category: '画意',
-        // 二级类目
-        category2: '',
-        // 三级类目
-        category3: '',
-        // 作者
-        author: '',
-
         // 商品图片
         pics:[]
       }
     }
   },
   created() {
-    this.product.sale_id = +this.$route.params.id;
-    this.product.auction_id = +this.$route.query.auction_id;
+    this.auction_id = +this.$route.params.id;
 
-    if(this.product.sale_id) {
-      this.getProduct(this.product.sale_id);
+    if(this.auction_id) {
+      // this.getProductList(this.auction_id);
     }
   },
   mounted() {
     this.init();
   },
   methods: {
-
     init() {
+      this.product = this.products[0];
+
       setInterval(() => {
         this.curr_time = moment().format("YYYY-MM-DD HH:mm:ss");
       }, 1000);
@@ -161,7 +144,7 @@ export default {
      * @method 根据排场读取拍品列表
      * @param
      */
-    getProduct(sale_id) {
+    getProductList(auction_id) {
       let URL = API.business.GET_SALE;
       let params = {
         sale_id: sale_id
@@ -189,8 +172,8 @@ export default {
      * @method 暂停
      * @param
      */
-    handelpurse() {
-
+    handelpause() {
+      let URL = API.business.CREAT_PRODUCT;
     },
 
     /*
@@ -198,9 +181,13 @@ export default {
      * @param
      */
     handelstart() {
-
+      let URL = API.business.CREAT_PRODUCT;
     },
 
+    /*
+     * @method 确认
+     * @param
+     */
     handelconfirm() {
       let URL = API.business.CREAT_PRODUCT;
 
@@ -224,6 +211,24 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+
+     /*
+     * @method 图片加载完成回调
+     * @param
+     */
+    handlelaodImg(evt) {
+      let target = evt.target;
+      // .pic-view
+      // let parentEl = target.parentNode;
+      let src = target.src;
+
+      let width = target.naturalWidth || target.width;
+      let height = target.naturalHeight || target.height;
+      let rate = width/height;
+      let targetWidth = rate * 300;
+
+      target.style.width = targetWidth + 'px';
     }
 
   }
@@ -236,7 +241,8 @@ export default {
   @import "~@/style/layout";
 
   .business__product {
-    padding: 20px 0;
+    margin: 0 auto;
+    padding: 10px 20px 20px;
     max-width: 650px;
   }
 
@@ -247,6 +253,19 @@ export default {
   .carousel {
     padding-bottom: 25px;
     height: auto;
+
+    .image__wrapper {
+       position: relative;
+       width: 100%;
+       height: 100%;
+    }
+
+    .live--image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   .el-carousel__item h3 {
