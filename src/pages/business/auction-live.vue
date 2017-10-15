@@ -14,7 +14,7 @@
     <!-- 排场拍品列表 -->
     <div class="live__products">
       <div class="carousel">
-        <el-carousel :interval="4500" type="card" height="200px">
+        <el-carousel :interval="4500" type="card" height="200px" v-if="product.pics.length">
           <el-carousel-item v-for="(item, index) in product.pics" :key="item">
             <div class="image__wrapper"><img class="live--image" :data-index="index" :src="item" :alt="product.number" @load="handlelaodImg" @click="handleScaleImage" /></div>
           </el-carousel-item>
@@ -26,24 +26,25 @@
         <el-button type="" @click="handelstart">开始</el-button>
         <el-button type="" @click="handelpause">暂停</el-button>
         <el-button type="primary" @click="handelconfirm">成交</el-button>
-        <el-button type="" @click="">下一个</el-button>
+        <el-button type="" @click="handelnext">下一个</el-button>
       </div>
     </div>
 
     <el-form class="product__form" ref="form" :model="product" label-width="110px">
       <el-form-item label="网上用户出价">
         <el-col :span="3" class="pl10">
-          <span>3200</span><span>￥</span>
+          <span>{{ online.user_price }}</span><span>￥</span>
         </el-col>
-        <el-col :span="4" class="pl10">
-          <span>网上用户数</span>
+        <el-col :span="6" class="pl10">
+          <span>出价人数: <span>{{ online.bid_user_num }}</span></span>
         </el-col>
-        <el-col :span="3" class="pl10">
-          <span>320</span>
+        <el-col :span="6" class="pl10">
+          <span>网上用户数: <span>{{ online.user_num }}</span></span>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary">确认</el-button>
         </el-col>
+        <div class="arrow-right icon" v-if="owner"></div>
       </el-form-item>
       <el-form-item label="现场价格">
         <el-col :span="10" class="pl10">
@@ -52,10 +53,11 @@
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelconfirm">提交</el-button>
         </el-col>
+        <div class="arrow-right icon" v-if="!owner"></div>
       </el-form-item>
       <el-form-item label="当前加价幅">
         <el-col :span="10" class="pl10">
-          <el-input v-model="product.rr" placeholder="当前加价幅" value=""></el-input>
+          <el-input v-model="product.increase_rate" placeholder="当前加价幅" value=""></el-input>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelconfirm">确认</el-button>
@@ -89,19 +91,19 @@ export default {
       curr_time: '',
       // 图片放大数组
       scaleImages: [],
-      pics: [
-        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
-        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n14tnrip17fo11cm1l2qc.jpeg",
-        "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n5af1qp41r3f5lojcld.jpeg",
-        "http://ox4oktbuv.bkt.clouddn.com/o_1brt9nicb12aro15b1ifqk101mg.jpeg"
-      ],
+      // 该商品归属网上用户: 1  还是现场: 0
+      owner: 0,
+      // 商品序号
+      index: 0,
       products: [
         {
           sale_id: 1001,
           currency: '￥',
           number: 'LOT2017100800003',
           price: '3000',
-          pics:["http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
+          increase_rate : 50,
+          pics:[
+            "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
             "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n14tnrip17fo11cm1l2qc.jpeg",
             "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805n5af1qp41r3f5lojcld.jpeg",
             "http://ox4oktbuv.bkt.clouddn.com/o_1brt9nicb12aro15b1ifqk101mg.jpeg"]
@@ -119,6 +121,12 @@ export default {
         price: '',
         // 商品图片
         pics:[]
+      },
+      // 网上
+      online: {
+        "user_price": 0,
+        "bid_user_num": 0,
+        "user_num": 0
       }
     }
   },
@@ -126,7 +134,7 @@ export default {
     this.auction_id = +this.$route.params.id;
 
     if(this.auction_id) {
-      // this.getProductList(this.auction_id);
+      this.getProductList(this.auction_id);
     }
   },
   mounted() {
@@ -134,8 +142,7 @@ export default {
   },
   methods: {
     init() {
-      this.product = this.products[0];
-
+      // this.product = this.products[0];
       setInterval(() => {
         this.curr_time = moment().format("YYYY-MM-DD HH:mm:ss");
       }, 1000);
@@ -145,7 +152,34 @@ export default {
      * @param
      */
     getProductList(auction_id) {
-      let URL = API.business.GET_SALE;
+      let URL = API.business.SALE_LIST;
+      let params = {
+        auction_id: auction_id,
+        status: 1
+      };
+
+      // auction
+      return request.get(URL, params)
+        .then((res) => {
+          if(res && res.data) {
+            let data = res.data;
+
+            this.products = data.list;
+            this.product = this.products[0];
+
+            this.getOnline(this.product.sale_id);
+
+            return data;
+          }
+        })
+        .catch(error => {
+          this.product = this.products[0];
+          console.log(error);
+        });
+    },
+
+    getOnline(sale_id) {
+      let URL = API.business.GET_ONLINE;
       let params = {
         sale_id: sale_id
       };
@@ -155,15 +189,13 @@ export default {
         .then((res) => {
           if(res && res.data) {
             let data = res.data;
-            console.log(res);
 
-            this.product = data;
-            this.pics = this.product.pics;
-
+            this.online = data;
             return data;
           }
         })
         .catch(error => {
+          this.product = this.products[0];
           console.log(error);
         });
     },
@@ -174,6 +206,11 @@ export default {
      */
     handelpause() {
       let URL = API.business.CREAT_PRODUCT;
+
+      this.$message({
+        type: 'success',
+        message: '拍卖已暂停'
+      });
     },
 
     /*
@@ -182,6 +219,25 @@ export default {
      */
     handelstart() {
       let URL = API.business.CREAT_PRODUCT;
+
+      this.$message({
+        type: 'success',
+        message: '拍卖已开始'
+      });
+    },
+
+    /*
+     * @method 下一个拍品
+     * @param
+     */
+    handelnext() {
+      this.index = this.index + 1;
+
+      if(this.index <= this.products.length) {
+        this.product = this.products[this.index];
+
+        this.getOnline(this.product.sale_id);
+      }
     },
 
     /*
@@ -338,83 +394,29 @@ export default {
     background-color: #d3dce6;
   }
 
-  /*-------------------*\
-    $ 图片作答
-  \*-------------------*/
-
-
-  .image__list {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-flow: row wrap;
-
-    padding: 15px 0 13px;
-
-    .image--add {
-      position: relative;
-
-      margin: 0 0.8% 1.6%;
-      width: 31.733%;
-      padding-bottom: 31.733%;
-      border-radius: 2px;
-      border: 1px solid #C8C8C8;
-
-      cursor: pointer;
-
-      .camera {
-        z-index: 1;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        opacity: 0;
-      }
-    }
-
-    .image--add:before,
-    .image--add:after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 53px;
-      height: 1px;
-
-      transform: translate(-50%, -50%);
-
-      background: #C8C8C8;
-    }
-    .image--add:after {
-      width: 1px;
-      height: 53px;
-    }
-
-    .pic-view {
-      position: relative;
-      margin: 0 0.8% 1.6%;
-      width: 31.733%;
-      padding-bottom: 31.733%;
-
-      background: #c8c8c8;
-      border-radius: 2px;
-      overflow: hidden;
-      -webkit-touch-callout: none;
-
-      img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        display: block;
-        max-width: 100%;
-        transform: translate(-50%, -50%);
-      }
-
-      .pic--loading {
-        width: 75%;
-      }
-    }
-
+  .arrow-right.icon {
+    position: absolute;
+    left: -125px;
+    top: 7px;
+    color: red;
+    margin-left: 2px;
+    margin-top: 10px;
+    width: 16px;
+    height: 1px;
+    background-color: currentColor;
   }
+
+  .arrow-right.icon:before {
+    content: '';
+    position: absolute;
+    right: 1px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-top: solid 1px currentColor;
+    border-right: solid 1px currentColor;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+
 </style>

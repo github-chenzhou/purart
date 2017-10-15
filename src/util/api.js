@@ -4,9 +4,9 @@
 
 
 let api
-// let host = 'http://47.95.231.215:8000';
+let host = 'http://47.95.231.215:8000';
 // let host = 'http://192.168.0.184:8000';
-let host = '';
+// let host = '';
 
 if (process.env.NODE_ENV === 'production') {
   api = {
@@ -33,6 +33,8 @@ if (process.env.NODE_ENV === 'production') {
       'GET_SALE':  host + '/seller/get_sale/',
       // 删除拍品信息
       'DEL_SALE':  host + '/seller/del_sale/',
+      // 网上用户信息
+      'GET_ONLINE':  host + '/seller/get_online_info/',
       'TEST': ''
     }
   }
@@ -62,6 +64,8 @@ if (process.env.NODE_ENV === 'production') {
       'GET_SALE':  host + '/seller/get_sale/',
       // 删除拍品信息
       'DEL_SALE':  host + '/seller/del_sale/',
+      // 网上用户信息
+      'GET_ONLINE':  host + '/seller/get_online_info/',
       'TEST': ''
     }
   }
