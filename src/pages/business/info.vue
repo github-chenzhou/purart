@@ -10,11 +10,11 @@
   <!-- 拍场信息 -->
   <div class="business__product">
     <el-form class="product__form" ref="form" :model="business" label-width="80px">
-      <el-form-item label="拍行名称">
+      <el-form-item label="拍行名称" prop="name" :rules="[{required: true, message: '拍行名称不能为空'}]">
         <el-input v-model="business.name" placeholder="拍行名称" value="拍行名称"></el-input>
       </el-form-item>
       <el-form-item label="拍行地址">
-        <el-col :span="6">
+        <el-col :span="5">
           <el-select v-model="business.address" placeholder="请选拍行地址">
             <el-option label="中国" value="中国"></el-option>
             <el-option label="美国" value="美国"></el-option>
@@ -23,17 +23,21 @@
             <el-option label="日本" value="日本"></el-option>
           </el-select>
         </el-col>
-        <el-col :span="18" class="pl10">
-          <el-input v-model="business.address2" placeholder="拍行地址" value=""></el-input>
+        <el-col :span="13" class="pl10">
+          <el-input v-model="business.address2" placeholder="省市" value=""></el-input>
         </el-col>
+        <!--  <el-col :span="13" class="pl10">
+          <el-input v-model="business.address3" placeholder="区县街道" value=""></el-input>
+        </el-col> -->
       </el-form-item>
-      <el-form-item label="街道">
+      <el-form-item label="街道" prop="street" :rules="[{required: true, message: '街道不能为空'}]">
         <el-input v-model="business.street" placeholder="街道" value=""></el-input>
       </el-form-item>
-      <el-form-item label="拍行邮编">
+      <el-form-item label="拍行邮编" prop="zip_code" :rules="[{required: true, message: '邮编不能为空'}]">
         <el-input v-model="business.zip_code" placeholder="拍行邮编" value=""></el-input>
       </el-form-item>
-      <el-form-item label="拍行邮箱">
+      <el-form-item label="拍行邮箱" prop="email" :rules="[{required: true, message: '邮箱不能为空'},
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }]">
         <el-input v-model="business.email" placeholder="拍行邮箱" value=""></el-input>
       </el-form-item>
       <el-form-item label="拍行电话">
@@ -48,7 +52,7 @@
 
       <el-form-item>
         <el-button type="primary" @click="handelconfirm" >确定</el-button>
-        <el-button>重置</el-button>
+        <el-button @click="handelreset">重置</el-button>
       </el-form-item>
 
     </el-form>
@@ -63,8 +67,26 @@ export default {
   },
   data () {
     return {
-       business: {
+      business: {
         business_id: 0,
+        // 拍行名称
+        name: '',
+        // 拍行地址
+        address: '中国',
+        address2: '',
+        // address3: '',
+        // 街道
+        street: '',
+        // 拍行邮编
+        zip_code: '',
+        email: '',
+        tel: '',
+        // 拍行简介
+        intro: '',
+        // 加价幅度
+        increase_rate: ''
+      },
+      oReset: {
         // 拍行名称
         name: '',
         // 拍行地址
@@ -83,27 +105,58 @@ export default {
       }
     }
   },
+  created() {
+    this.business.business_id =  +this.$route.params.id || 0;
+
+    if(this.business.business_id) {
+      this.getProduct(this.product.sale_id);
+    }
+  },
   methods: {
-    handelconfirm() {
-      let URL = API.business.CREAT_BUSINESS || 'http://47.95.231.215:8000/seller/business_input/';
+    /*
+     * @method 读取拍卖行信息
+     * @param
+     */
+    getBusiness() {
+      let URL = API.business.GET_BUSINESS;
       let params = {
-          business_id: this.business.business_id,
-          // 拍行名称
-          name: this.business.name,
-          // 拍行地址
-          address: this.business.address,
-          address2: this.business.address2,
-          // 街道
-          street: this.business.street,
-          // 拍行邮编
-          zip_code: this.business.zip_code,
-          email: this.business.email,
-          tel: '',
-          // 拍行简介
-          intro: '',
-          // 加价幅度
-          increase_rate: ''
+        business_id: this.business.business_id
       };
+
+      // business
+      return request.get(URL, params)
+        .then((res) => {
+          if(res && res.data) {
+            let data = res.data;
+
+            console.log(res);
+
+            this.business = data;
+
+            return data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    /*
+     * @method 重置
+     * @param
+     */
+    handelreset(evt) {
+      this.business = Object.assign(this.business, this.oReset, {
+
+      });
+    },
+
+    /*
+     * @method 拍行提交
+     * @param
+     */
+    handelconfirm() {
+      let URL = API.business.CREAT_BUSINESS;
 
       // lessons
       return request.post(URL, this.business)
@@ -112,6 +165,12 @@ export default {
             let data = res.data;
 
             console.log(res);
+
+            this.$message({
+              showClose: true,
+              message: '拍行创建成功',
+              type: 'success'
+            });
 
             return data;
           }

@@ -102,7 +102,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="年份">
-        <el-col :span="6">
+        <!--  <el-col :span="6">
           <el-select v-model="product.year" placeholder="">
               <el-option label="公元" value="公元"></el-option>
               <el-option label="公元前" value="公元前"></el-option>
@@ -110,6 +110,30 @@
         </el-col>
         <el-col :span="18" class="pl10">
             <el-input v-model="product.year2" placeholder="商品年份" value=""></el-input>
+        </el-col> -->
+        <el-col :span="10">
+          <el-select v-model="product.year" placeholder="请选择年份">
+            <el-option label="1800~1810" value="1800~1810"></el-option>
+            <el-option label="1810~1820" value="1810~1820"></el-option>
+            <el-option label="1820~1830" value="1820~1830"></el-option>
+            <el-option label="1830~1840" value="1830~1840"></el-option>
+            <el-option label="1840~1850" value="1840~1850"></el-option>
+            <el-option label="1850~1860" value="1850~1860"></el-option>
+            <el-option label="1860~1870" value="1860~1870"></el-option>
+            <el-option label="1870~1880" value="1870~1880"></el-option>
+            <el-option label="1880~1890" value="1880~1890"></el-option>
+            <el-option label="1890~1900" value="1890~1900"></el-option>
+            <el-option label="1900~1910" value="1900~1910"></el-option>
+            <el-option label="1910~1920" value="1910~1920"></el-option>
+            <el-option label="1920~1930" value="1920~1930"></el-option>
+            <el-option label="1930~1940" value="1930~1940"></el-option>
+            <el-option label="1940~1950" value="1940~1950"></el-option>
+            <el-option label="1950~1960" value="1950~1960"></el-option>
+            <el-option label="1960~1970" value="1960~1970"></el-option>
+            <el-option label="1970~1980" value="1970~1980"></el-option>
+            <el-option label="1980~1990" value="1980~1990"></el-option>
+            <el-option label="1990~2000" value="1990~2000"></el-option>
+          </el-select>
         </el-col>
       </el-form-item>
       <el-form-item label="品类">
@@ -157,7 +181,7 @@
 
         <el-form-item>
           <el-button type="primary" @click="handelconfirm">立即创建</el-button>
-          <el-button>重置</el-button>
+          <el-button @click="handelreset">重置</el-button>
         </el-form-item>
 
       </el-form>
@@ -206,7 +230,49 @@ export default {
         // 所属国地区
         origin2: '',
         // 公元前 B.C. 公元 A.C.
-        year: '公元',
+        year: '1800~1810',
+        // 年份
+        year2: '',
+        // 类目
+        // 一级类目
+        category: '画意',
+        // 二级类目
+        category2: '',
+        // 三级类目
+        category3: '',
+        // 作者
+        author: '',
+
+        // 商品图片
+        pics:[]
+      },
+      oReset: {
+        // 币种
+        currency: '￥',
+        // 起拍价格
+        price: '',
+        // 市场估值
+        valuation: '',
+        // 材质
+        material: [],
+        // 尺寸单位
+        measurement_unit: 'cm',
+        // 长宽高
+        inch: '',
+        // 商品重量单位
+        weight_unit: 'g',
+        // 商品重量
+        weight: '',
+        // 商品状况
+        item_status: '完好',
+        // 来源
+        come_from: '',
+        // 所属国
+        origin: '中国',
+        // 所属国地区
+        origin2: '',
+        // 公元前 B.C. 公元 A.C.
+        year: '1800~1810',
         // 年份
         year2: '',
         // 类目
@@ -560,6 +626,16 @@ export default {
 
         gallery.init();
 
+    },
+
+    /*
+     * @method 重置
+     * @param
+     */
+    handelreset(evt) {
+      this.product = Object.assign(this.product, this.oReset, {
+
+      });
     },
 
     handelconfirm() {

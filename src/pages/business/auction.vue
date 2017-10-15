@@ -31,7 +31,7 @@
 
       <el-form-item>
         <el-button type="primary" @click="handelconfirm">立即创建</el-button>
-        <el-button>重置</el-button>
+        <el-button @click="handelreset">重置</el-button>
       </el-form-item>
 
      </el-form>
@@ -57,7 +57,13 @@ export default {
         summary: '',
         commission_rate: '',
         date: '',
-        time: '',
+        time: ''
+      },
+      oReset: {
+        summary: '',
+        commission_rate: '',
+        date: '',
+        time: ''
       }
     }
   },
@@ -99,8 +105,17 @@ export default {
         });
     },
 
+    /*
+     * @method 重置
+     * @param
+     */
+    handelreset(evt) {
+      this.auction = Object.assign(this.auction, this.oReset, {
+
+      });
+    },
+
     handelconfirm() {
-      // let URL = 'http://47.95.231.215:8000/seller/auction_input/';
       let URL = API.business.CREAT_AUCTION;
       let params = {
         auction_id: this.auction.auction_id,
