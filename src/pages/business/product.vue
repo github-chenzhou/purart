@@ -6,7 +6,7 @@
         <!-- <el-input v-model="product.number" placeholder="LOT" value=""></el-input> -->
         <p class="">{{ product.number }}</p>
       </el-form-item>
-      <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'}]">
+      <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'},{ type: 'number', message: '起拍价格必须为数字值'}]">
         <el-col :span="3">
           <el-select v-model="product.currency" placeholder="">
             <el-option label="￥" value="￥"></el-option>
@@ -19,7 +19,7 @@
           <el-input v-model="product.price" placeholder="起拍价格" value="" ></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="市场估价">
+      <el-form-item label="市场估价" prop="currency" :rules="[{ type: 'number', message: '市场估价必须为数字值'}]">
         <el-col :span="3">
           <el-select v-model="product.currency" placeholder="">
             <el-option label="￥" value="￥"></el-option>

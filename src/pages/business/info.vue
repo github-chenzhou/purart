@@ -106,10 +106,10 @@ export default {
     }
   },
   created() {
-    this.business.business_id =  +this.$route.params.id || 0;
+    this.business.business_id =  +this.$route.params.id || 1;
 
     if(this.business.business_id) {
-      this.getProduct(this.product.sale_id);
+      this.getBusiness(this.business.business_id);
     }
   },
   methods: {

@@ -38,6 +38,14 @@ if (process.env.NODE_ENV === 'production') {
       'DEL_SALE':  host + '/seller/del_sale/',
       // 网上用户信息
       'GET_ONLINE':  host + '/seller/get_online_info/',
+      // 拍卖开始
+      'SET_LIVE_STATUS': host + '/seller/edit_sale_status/',
+      // 设置现场人数
+      'SET_LIVE_NUM': host + '/seller/edit_auction_live_num/',
+      // 设置加价幅度
+      'SET_INCREATE_RATE': host + '/seller/edit_sale_increase_rate/',
+      // 设置加价幅度
+      'CANFIRM_PRICE': host + '/seller/bid_record/',
       'TEST': ''
     }
   }
@@ -71,6 +79,14 @@ if (process.env.NODE_ENV === 'production') {
       'DEL_SALE':  host_dev + '/seller/del_sale/',
       // 网上用户信息
       'GET_ONLINE':  host_dev + '/seller/get_online_info/',
+      // 拍卖开始
+      'SET_LIVE_STATUS': host_dev + '/seller/edit_sale_status/',
+      // 设置现场人数
+      'SET_LIVE_NUM': host_dev + '/seller/edit_auction_live_num/',
+      // 设置加价幅度
+      'SET_INCREATE_RATE': host_dev + '/seller/edit_sale_increase_rate/',
+      // 设置加价幅度
+      'CANFIRM_PRICE': host_dev + '/seller/bid_record/',
       'TEST': ''
     }
   }
