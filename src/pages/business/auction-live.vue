@@ -50,7 +50,7 @@
       <el-form-item label="现场价格">
         <el-col :span="10" class="pl10">
           <!-- <el-input v-model="product.price" placeholder="现场价格" value=""></el-input> -->
-          <el-input-number v-model="product.price" :step="product.increase_rate" placeholder="现场价格"></el-input-number>
+          <el-input-number v-model="product.new_price" :step="product.increase_rate" placeholder="现场价格"></el-input-number>
         </el-col>
         <el-col :span="5" class="pl10">
           <el-button type="primary" @click="handelpriceConfirm" data-win="live">确认</el-button>
@@ -100,7 +100,7 @@ export default {
           sale_id: 1001,
           currency: '￥',
           number: 'LOT2017100800003',
-          price: '3000',
+          new_price: '3000',
           increase_rate : 50,
           pics:[
             "http://ox4oktbuv.bkt.clouddn.com/o_1brt4805nl5i5en1v2766118mub.jpeg",
@@ -118,7 +118,7 @@ export default {
         // 币种
         currency: '￥',
         // 起拍价格
-        price: '',
+        new_price: '',
         // 商品图片
         pics:[]
       },
@@ -135,7 +135,7 @@ export default {
       status: 1,
       // 现场价格
       live_price: 0,
-      // 网上价格
+      // 成交数据
       online_price: 0
     }
   },
@@ -162,6 +162,10 @@ export default {
       setInterval(() => {
         this.curr_time = moment().format("YYYY-MM-DD HH:mm:ss");
       }, 1000);
+
+      setInterval(() => {
+        // this.getOnline(this.product.sale_id);
+      }, 2000)
     },
 
     /*
@@ -291,12 +295,13 @@ export default {
      * @param
      */
     handelconfirm() {
-      let URL = API.business.CANFIRM_PRICE;
+      let URL = API.business.DEAL;
       let params = {
-        sale_id: '',
+        sale_id: this.product.sale_id,
         // live online
-        win: this.win,
-        price: 0
+        bid_from: this.win,
+        price: this.win === 'live' ? +this.product.new_price : +this.online.user_price,
+        status: 1
       }
 
       let sTip = '确认' + this.win === 'live' ? '现场' : '网上' + '用户竞拍得此商品？' ;
@@ -316,6 +321,8 @@ export default {
                 message: '成交成功!'
               });
 
+              this.handelnext();
+
               return data;
             }
           }).catch(error => {
@@ -331,7 +338,7 @@ export default {
         sale_id: this.product.sale_id,
         // live online
         bid_from: win,
-        price: this.win === 'live' ? +this.product.price : +this.online.user_price,
+        price: this.win === 'live' ? +this.product.new_price : +this.online.user_price,
         status: 1
       }
 

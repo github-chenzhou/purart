@@ -46,6 +46,8 @@ if (process.env.NODE_ENV === 'production') {
       'SET_INCREATE_RATE': host + '/seller/edit_sale_increase_rate/',
       // 设置加价幅度
       'CANFIRM_PRICE': host + '/seller/bid_record/',
+      // Deal
+      'DEAL': host + '/seller/bid_result/',
       'TEST': ''
     }
   }
@@ -87,6 +89,8 @@ if (process.env.NODE_ENV === 'production') {
       'SET_INCREATE_RATE': host_dev + '/seller/edit_sale_increase_rate/',
       // 设置加价幅度
       'CANFIRM_PRICE': host_dev + '/seller/bid_record/',
+      // Deal
+      'DEAL': host_dev + '/seller/bid_result/',
       'TEST': ''
     }
   }
