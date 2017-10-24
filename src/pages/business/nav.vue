@@ -24,12 +24,12 @@
         <span>拍品列表</span>
       </router-link>
     </el-menu-item> -->
-    <el-menu-item index="4">
+   <!--  <el-menu-item index="4">
       <router-link to="/product/0" tag="div">
         <i class="el-icon-search"></i>
         <span>拍品信息</span>
       </router-link>
-    </el-menu-item>
+    </el-menu-item> -->
     <el-menu-item index="3">
       <router-link to="/live/3" tag="div">
         <i class="el-icon-more"></i>

@@ -6,7 +6,7 @@
         <!-- <el-input v-model="product.number" placeholder="LOT" value=""></el-input> -->
         <p class="">{{ product.number }}</p>
       </el-form-item>
-      <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'},{ type: 'number', message: '起拍价格必须为数字值'}]">
+      <el-form-item label="起拍价格" prop="price" :rules="[{required: true, message: '起拍价格不能为空'}]">
         <el-col :span="3">
           <el-select v-model="product.currency" placeholder="">
             <el-option label="￥" value="￥"></el-option>
@@ -19,7 +19,8 @@
           <el-input v-model="product.price" placeholder="起拍价格" value="" ></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="市场估价" prop="currency" :rules="[{ type: 'number', message: '市场估价必须为数字值'}]">
+      <!-- :rules="[{ type: 'number', message: '市场估价必须为数字值'}]" -->
+      <el-form-item label="市场估价" prop="currency">
         <el-col :span="3">
           <el-select v-model="product.currency" placeholder="">
             <el-option label="￥" value="￥"></el-option>
@@ -150,19 +151,6 @@
               <el-option label="古酒" value="古酒"></el-option>
             </el-select>
           </el-col>
-         <!--  <el-col :span="6" class="pl10">
-            <el-select v-model="product.category2" placeholder="">
-              <el-option label="绘画" value="绘画"></el-option>
-              <el-option label="雕塑" value="雕塑"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="6" class="pl10">
-            <el-select v-model="product.category3" placeholder="">
-              <el-option label="油画" value="油画"></el-option>
-              <el-option label="素描" value="素描"></el-option>
-            </el-select>
-          </el-col> -->
-
         </el-form-item>
 
         <!-- 品牌的话显示品牌 -->
@@ -543,22 +531,6 @@ export default {
         let item = { src: src, w: width || 750, h: height || 520 };
         this.scaleImages[index] = item;
 
-        // 预览状态并且只有一张图片单独处理
-        // if(this.ispreview && this.oSubject.pics && this.oSubject.pics.length === 1) {
-        //   if(rate > 1) {
-        //     parentEl.style.width = '100%';
-        //     parentEl.style.paddingBottom = 100 / rate + '%';
-        //   } else {
-        //     parentEl.style.height = 325 + 'px';
-        //     parentEl.style.width = 325 * rate + 'px';
-        //   }
-        // } else {
-        //   if(rate > 1) {
-        //     target.style.maxHeight = '100%';
-        //     target.style.maxWidth = 'none';
-        //   }
-        // }
-
         // 矫正预加载 图片
         let oImg = new Image();
         oImg.onload = (e) => {
@@ -626,6 +598,31 @@ export default {
 
         gallery.init();
 
+    },
+
+    /*
+     * @method 缓存之前录入可重复使用字段
+     * @param
+     */
+    setRecord() {
+      let product = this.product;
+      let key = 'purart' + this.product.auction_id;
+      let value = {
+        currency: product.key,
+        measurement_unit: product.measurement_unit,
+         // 商品状况
+        item_status: product.item_status,
+        // 所属国
+        origin: product.origin,
+        // 所属国地区
+        origin2: product.origin2,
+        // 公元前
+        year: product.year,
+        // 类目
+        category: product.category
+      };
+
+      localStorage.setItem(key, JSON.stringify(value));
     },
 
     /*

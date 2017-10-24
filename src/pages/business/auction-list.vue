@@ -41,10 +41,7 @@ export default {
   name: 'business-auction-list',
   data () {
     return {
-       tableData: [{
-          auction_id: '10001',
-          auction_num: 'LOT201710060001'
-        }]
+      tableData: []
     }
   },
   created() {

@@ -10,7 +10,7 @@
   <!-- 拍场信息 -->
   <div class="business__product">
     <el-form class="product__form" ref="form" :model="auction" label-width="80px">
-      <el-form-item label="拍品概括">
+      <el-form-item label="拍品概括" prop="summary" :rules="[{required: true, message: '拍品概括不能为空'}]">
         <el-input type="textarea" v-model="auction.summary" placeholder="拍品概括" value=""></el-input>
       </el-form-item>
       <el-form-item label="佣金比例">

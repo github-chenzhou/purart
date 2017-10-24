@@ -11,21 +11,7 @@
     <section class="page-fixed">
       <!-- header  -->
       <header class="index__header">
-        <div class="wrapper___35NP9">
-          <div class="search-bar">
-            <div class="image-container">
-              <a class="link header-logo" href="/"></a>
-            </div>
-            <div class="search-field-container">
-              <div class="search-input___2bZry">
-                <input type="text" name="search-bar-desktop" placeholder="Search for items and auction houses" value="" autocomplete="off" class="form-control bootstrap-typeahead-input-main">
-              </div>
-              <i class="fa  fa-search search-field-icon___lPIO0" style="cursor:pointer"></i>
-            </div>
-
-            <div class="search-button-container___1-KcN"><i class="fa  fa-search search-field-icon___1JJJJ" style="cursor:pointer"></i></div><div class="controls-container___jqKJ5"><div class="logged-out-controls___J4olr"><a class="link___33BvM primary-weak___3oVtF link-default___3j3sO"><span>Log In</span></a><button type="button" class="button___3_Ozh primary___zYyzg button-default___25diZ btn btn-default"><span>Join</span></button></div></div>
-          </div>
-        </div>
+        <Header-Component :index="index"></Header-Component>
       </header>
 
     </section>
@@ -41,47 +27,6 @@
     <section class="index__footer ">
     </section>
 
-
-
-    <!-- 图片放大结构 -->
-    <section class="pswp J_pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-      <div class="pswp__bg"></div>
-
-      <div class="pswp__scroll-wrap">
-
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <div class="pswp__ui pswp__ui--hidden">
-
-          <div class="pswp__top-bar">
-
-            <div class="pswp__counter"></div>
-
-              <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-              </div>
-            </div>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
     <router-view></router-view>
   </section>
 </template>
@@ -91,6 +36,8 @@
   import API from '@/util/api'
   import '@/util/util'
   import { configWX } from '@/util/wx-util'
+
+  import HeaderComponent from '@/components/header'
 
 
   // 子组件不需要引用直接使用
@@ -115,7 +62,7 @@
       };
     },
     components: {
-      // identity: () => import('@/components/student/identityBinding.vue')
+      HeaderComponent
     },
     computed: {
     },
@@ -422,89 +369,6 @@
     left: 0;
     width: 100%;
   }
-
-
-
-  /*-------------------*\
-    $ header
-  \*-------------------*/
-
-
-  .student__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 1.33rem;
-    color: #2A2A2A;
-    background: #EDF2F6;
-    /* box-shadow: 0 4px 6px rgba(0,0,0, 0.2); */
-
-    .student__header--back, .student__header--more {
-      width: 1.0rem;
-    }
-
-    .header-title {
-      flex: 1;
-
-      color: #2a2a2a;
-
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .student__header--more {
-      position: relative;
-      width: 1.2rem;
-
-      .more-actions {
-        position: absolute;
-        top: 1.33rem;
-        right: 0.1rem;
-
-        padding: 0 0.28rem;
-        width: 4.0rem;
-        /*height: 3.12rem;*/
-
-        color: #fff;
-
-        background: rgba(51,51,51, 0.9);
-        border-radius: 0.106667rem;
-
-        animation-duration: 0.3s;
-
-        .line {
-          border-bottom: 1px solid #C8C8C8;
-        }
-
-        .action {
-          padding: 0.266667rem 0;
-
-          line-height: 0.933333rem;
-          text-align: center;
-
-          .iconfont {
-            padding-right: 0.186667rem;
-            vertical-align: -0.08rem;
-          }
-        }
-      }
-
-      .more-actions:before {
-        position: absolute;
-        top: -0.399rem;
-        right: 0.28rem;
-
-        content: '';
-        border: 0.2rem solid rgba(51,51,51, 0.9);
-        border-color: transparent transparent rgba(51,51,51, 0.9) transparent;
-      }
-
-    }
-
-  }
-
 
 
 
