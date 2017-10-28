@@ -1,113 +1,99 @@
 /**
  * @desc API
  */
+
+
 let api
+let host_dev = 'http://47.95.231.215:8000';
+// let host = 'http://47.95.231.215:8000';
+// let host = 'http://192.168.0.184:8000';
+let host = '';
 
 if (process.env.NODE_ENV === 'production') {
-    api = {
-        // 用户权限
-        'GET_USER_INFO': '/v/lesson/lesson_user_info',
+  api = {
 
-        // 软件版本号
-        'GET_SOFT_VERSION': '/v/lesson/lesson_ppt_version',
-
-        /*------------------*\
-           $ 接收器 start
-        \*------------------*/
-
-        student: {
-            // 课件习题列表
-            'GET_PRESENTATION_LIST': '/v/lesson/lesson_info_v2',
-            // 红包详情
-            'GET_RED_ENVELOPE_DETAIL': '/api/red/red_envelope_detail/',
-            // 习题提交
-            'ANSWER_LESSON_PROBLEM': '/v/lesson/answer_lesson_problem',
-            // 习题自动提交
-            'RETRY_ANSWER_LESSON_PROBLEM': '/v/lesson/retry_answer_lesson_problem',
-            // 主观题分数获取
-            'PROBLEM_SCORE': '/v/lesson/subjective_problem_student_info',
-            // 更新PPT数据
-            'FETCH_PRESENTATION_DATA': '/lesson/fetch_presentation_data/',
-            // ppt收藏 不懂
-            'SET_LEESON_SILDE_TAG': '/v/lesson/post_studentlessonslide_tag',
-            // 发送danmu
-            'SEND_DANMU': '/v/api/danmu/send_danmu',
-            // 发送投稿
-            'SEND_SUBMISSION': '/v/api/tougao/create',
-            // 我的投稿列表
-            'GET_SUBMISSION_LIST': '/v/api/tougao/student/list',
-            // 删除投稿
-            'DELETE_SUBMISSION': '/v/api/tougao/delete',
-            // 上传图片
-            'UPLOAD_PIC': '/v/api/tougao/pic_upload',
-            // 单个投稿信息
-            'GET_SUBMISSION': '/v/api/tougao/tougao_info',
-            'AUDIT_CLASSROOM': '/edu_admin/audit_classroom/'
-        },
-
-        /*------------------*\
-          $ 接收器 end
-        \*------------------*/
-
-        /* 雨课件市场 start */
-        market: {
-          'user_info': '/v/course_meta/user_info',
-          'get_rain_courseware_list': '/v/rain_courseware/get_rain_courseware_list/',
-          'rain_courseware_list': '/v/rain_courseware/rain_courseware_list/',
-          'bind_serial_number': '/v/rain_courseware/bind_serial_number/'
-        }
-      /* 雨课件市场 end */
-
+    // 商家后台
+    business: {
+      // 商品信息录入
+      'CREAT_PRODUCT': host + '/seller/sale_input/',
+      // 拍行信息录入
+      'CREAT_BUSINESS': host + '/seller/business_input/',
+      // 排场信息录入
+      'CREAT_AUCTION': host + '/seller/auction_input/',
+      // 七牛uptoken
+      'UPTOKEN': host + '/qiniu/get_upload_token/',
+      // 拍行信息读取
+      'GET_BUSINESS': host + '/seller/get_business/',
+      // 排场列表
+      'GET_AUCTION_LIST':  host + '/seller/get_auction_list/',
+      // 排场信息
+      'GET_AUCTION':  host + '/seller/get_auction/',
+      // 排场信息删除
+      'DEL_AUCTION':  host + '/seller/del_auction/',
+      // 拍品列表
+      'SALE_LIST':  host + '/seller/get_sale_list/',
+      // 拍品信息
+      'GET_SALE':  host + '/seller/get_sale/',
+      // 删除拍品信息
+      'DEL_SALE':  host + '/seller/del_sale/',
+      // 网上用户信息
+      'GET_ONLINE':  host + '/seller/get_online_info/',
+      // 拍卖开始
+      'SET_LIVE_STATUS': host + '/seller/edit_sale_status/',
+      // 设置现场人数
+      'SET_LIVE_NUM': host + '/seller/edit_auction_live_num/',
+      // 设置加价幅度
+      'SET_INCREATE_RATE': host + '/seller/edit_sale_increase_rate/',
+      // 设置加价幅度
+      'CANFIRM_PRICE': host + '/seller/bid_record/',
+      // Deal
+      'DEAL': host + '/seller/bid_result/',
+      'TEST': ''
     }
-}else {
-    api = {
+  }
 
-        // 用户权限
-        'GET_USER_INFO': '/static/mock/user_info.json',
+} else {
+  api = {
 
-        /*------------------*\
-           $ 接收器 start
-        \*------------------*/
-
-        student: {
-            // 课件习题列表
-            'GET_PRESENTATION_LIST': '/static/mock/student/presentationList.json',
-            // 红包详情
-            'GET_RED_ENVELOPE_DETAIL': '/static/mock/student/red_envelope_detail.json',
-            // 习题提交
-            'ANSWER_LESSON_PROBLEM': '/static/mock/student/presentationList.json',
-            // 习题自动提交
-            'RETRY_ANSWER_LESSON_PROBLEM': '/static/mock/student/presentationList.json',
-            // 更新PPT数据
-            'FETCH_PRESENTATION_DATA': '/static/mock/student/presentationList.json',
-            // ppt收藏 不懂
-            'SET_LEESON_SILDE_TAG': '/static/mock/student/presentationList.json',
-            // 发送danmu
-            'SEND_DANMU': '/static/mock/student/presentationList.json',
-            // 发送投稿
-            'SEND_SUBMISSION': '/v/tougao/create',
-            // 我的投稿列表
-            'GET_SUBMISSION_LIST': '/static/mock/student/tougao_list.json',
-            // 删除投稿
-            'DELETE_SUBMISSION': '/static/mock/student/tougao_list.json',
-            // 上传图片
-            'UPLOAD_PIC': 'v/tougao/pic_uplaod',
-            'AUDIT_CLASSROOM': '/edu_admin/audit_classroom/'
-        },
-
-        /*------------------*\
-           $ 接收器 end
-        \*------------------*/
-      /* 雨课件市场 start */
-      market: {
-        'user_info': '/static/mock/market/user_info.json',
-        'get_rain_courseware_list': '/static/mock/market/get_rain_courseware_list.json',
-        'rain_courseware_list': '/static/mock/market/rain_courseware_list.json',
-        'bind_serial_number': '/static/mock/market/bind_serial_number.json'
-      }
-      /* 雨课件市场 end */
-
+    // 商家后台
+    business: {
+      // 商品信息录入
+      'CREAT_PRODUCT': host_dev + '/seller/sale_input/',
+      // 拍行信息录入
+      'CREAT_BUSINESS': host_dev + '/seller/business_input/',
+      // 排场信息录入
+      'CREAT_AUCTION': host_dev + '/seller/auction_input/',
+      // 七牛uptoken
+      'UPTOKEN': host_dev + '/qiniu/get_upload_token/',
+      // 拍行信息读取
+      'GET_BUSINESS': host_dev + '/seller/get_business/',
+      // 排场列表
+      'GET_AUCTION_LIST':  host_dev + '/seller/get_auction_list/',
+      // 排场信息
+      'GET_AUCTION':  host_dev + '/seller/get_auction/',
+       // 排场信息删除
+      'DEL_AUCTION':  host_dev + '/seller/del_auction/',
+      // 拍品列表
+      'SALE_LIST':  host_dev + '/seller/get_sale_list/',
+       // 拍品信息
+      'GET_SALE':  host_dev + '/seller/get_sale/',
+      // 删除拍品信息
+      'DEL_SALE':  host_dev + '/seller/del_sale/',
+      // 网上用户信息
+      'GET_ONLINE':  host_dev + '/seller/get_online_info/',
+      // 拍卖开始
+      'SET_LIVE_STATUS': host_dev + '/seller/edit_sale_status/',
+      // 设置现场人数
+      'SET_LIVE_NUM': host_dev + '/seller/edit_auction_live_num/',
+      // 设置加价幅度
+      'SET_INCREATE_RATE': host_dev + '/seller/edit_sale_increase_rate/',
+      // 设置加价幅度
+      'CANFIRM_PRICE': host_dev + '/seller/bid_record/',
+      // Deal
+      'DEAL': host_dev + '/seller/bid_result/',
+      'TEST': ''
     }
+  }
 }
 
 export default api

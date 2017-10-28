@@ -1,14 +1,21 @@
 <template>
-   <div class="page_header page-fixed">
-      <el-menu theme="dark" :default-active="index" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1">首页</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">我的工作台</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-        </el-submenu>
-        <el-menu-item index="3"><router-link to="/business">管理</router-link></el-menu-item>
-      </el-menu>
+   <div class="page_header">
+    <!-- 导航信息 -->
+    <div class="page__nav">
+      <div class="nav__logo">
+        <router-link to="/index"><img src="http://ox4oktbuv.bkt.clouddn.com/o_1bt17tg2v1ece1qmqd8irl81n23g.png" alt="古一巷" /></router-link>
+      </div>
+      <div class="nav__menus">
+        <ul class="nav__menus__wrap">
+          <li class="nav__menus--item">实时拍卖</li>
+          <li class="nav__menus--item">下载App</li>
+          <li class="nav__menus--item">搜索拍品</li>
+          <li class="nav__menus--item">我的订单</li>
+          <li class="nav__menus--item">售后</li>
+        </ul>
+      </div>
+      <!-- <div class="nav__tel">电话: 010-88888888</div> -->
+    </div>
   </div>
 </template>
 
@@ -17,8 +24,8 @@ export default {
   name: 'header',
   props: {
     index: {
-      type: Number,
-      default: 1
+      type: String,
+      default: '1'
     }
   },
   data () {
@@ -38,4 +45,66 @@ export default {
 <style lang="scss" scoped>
   @import "~@/style/base.css";
   @import "~@/style/layout";
+
+
+  .page_header {
+     background: #fff;
+  }
+
+  .page__nav {
+    display: flex;
+    // justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+    padding: 12px 17px;
+
+    width: 1200px;
+    // height: 60px;
+    line-height: 50px;
+
+    font-size: 26px;
+    color: #AB9485;
+    background: #fff;
+
+
+    .nav__logo {
+      max-width: 100px;
+      line-height: 100%;
+      margin-right: 50px;
+
+      img {
+        width: 70px;
+        height: 70px;
+
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+      }
+    }
+
+    .nav__menus {
+      flex: 1;
+      max-width: 750px;
+      margin-top: -12px;
+      .nav__menus__wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border-bottom: 1px solid #AB9485;
+
+        .nav__menus--item {
+          text-align: center;
+          cursor: pointer;
+        }
+
+      }
+    }
+
+    .nav__tel {
+
+    }
+  }
 </style>
