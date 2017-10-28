@@ -8,24 +8,98 @@
 
 <template>
   <section class="page" @click="handleFilter">
-    <section class="page-fixed">
-      <!-- header  -->
-      <header class="index__header">
-        <Header-Component :index="index"></Header-Component>
-      </header>
-
-    </section>
-
+    <!-- header  -->
+    <header class="index__header">
+      <Header-Component :index="index"></Header-Component>
+    </header>
 
     <!-- 内容 -->
-    <section class="index__content">
+    <!-- <section class="index__content"> -->
+      <!-- banner -->
+      <section class="index__banner">
+        <div class="banner__inner"></div>
 
-    </section>
+      </section>
 
+      <!-- 地域 -->
+      <section class="index__market">
+        <div class="market__wrap">
+          <ul class="market__country">
+            <li class="country--name">北美</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美北美</li>
+            <li class="country--city f28">北美</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美</li>
+          </ul>
+          <ul class="market__country">
+            <li class="country--name">欧洲</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美</li>
+            <li class="country--city f28">北美北美</li>
+            <li class="country--city f20">北美</li>
+          </ul>
+          <ul class="market__country">
+            <li class="country--name">日本</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美</li>
+            <li class="country--city f28">北美</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美hahahh</li>
+            <li class="country--city f28">北美</li>
+            <li class="country--city f24">北美</li>
+          </ul>
+          <ul class="market__country">
+            <li class="country--name">其它</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北北美美</li>
+            <li class="country--city f28">北美</li>
+            <li class="country--city f24">北美</li>
+            <li class="country--city f20">北美</li>
+          </ul>
+        </div>
+
+      </section>
+
+      <!-- banner -->
+      <section class="index__recommend">
+        <div class="recommends__wrap">
+          <div class="recommend__area1">
+            <div class="recommend--desc">
+              <p>尺寸：18cm x 27cm<br>在一个月黑风高的夜晚<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了</p>
+            </div>
+            <div class="recommend__image-wrap">
+              <img class="recommend--image" src="https://p1.liveauctioneers.com/5982/110342/56611031_1_x.jpg?version=0&width=250&format=pjpg&auto=webp" alt="">
+            </div>
+          </div>
+          <div class="recommend__area2">
+            <div class="recommend--desc">
+              <p>尺寸：18cm x 27cm<br>在一个月黑风高的夜晚<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了</p>
+            </div>
+            <div class="recommend__image-wrap">
+              <img class="recommend--image" src="https://p1.liveauctioneers.com/5584/110913/56921625_1_x.jpg?version=1508273393&width=340&format=pjpg&auto=webp">
+            </div>
+          </div>
+          <div class="recommend__area3">
+            <div class="recommend--desc">
+              <p>尺寸：18cm x 27cm<br>在一个月黑风高的夜晚<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了这个花瓶<br>卡夫爷爷的爷爷卖了</p>
+            </div>
+            <div class="recommend__image-wrap">
+              <img class="recommend--image" src="https://p1.liveauctioneers.com/1384/110732/56839596_1_x.jpg?version=1507908521&width=250&format=pjpg&auto=webp">
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section class="index__recommend2">
+      </section>
+
+      <!-- footer -->
+      <div class="index__footer"><Footer-Component></Footer-Component></div>
+    <!-- </section> -->
 
     <!-- footer -->
-    <section class="index__footer ">
-    </section>
+    <!-- <div class="index__footer"><Footer-Component></Footer-Component></div> -->
 
     <router-view></router-view>
   </section>
@@ -38,6 +112,7 @@
   import { configWX } from '@/util/wx-util'
 
   import HeaderComponent from '@/components/header'
+  import FooterComponent from '@/components/footer'
 
 
   // 子组件不需要引用直接使用
@@ -62,7 +137,8 @@
       };
     },
     components: {
-      HeaderComponent
+      HeaderComponent,
+      FooterComponent
     },
     computed: {
     },
@@ -361,70 +437,197 @@
   // @import "~@/style/font/iconfont/iconfont.css";
   // @import "~@/style/animate.css";
   // @import "~@/style/mintui.css";
+  @import "~@/style/base.css";
+
+  .page {
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+    // padding-bottom: 180px;
+    // height: auto !important;
+    min-height: 100%;
+  }
 
   .page-fixed {
     z-index: 1;
-    position: fixed;
+    // position: fixed;
     top: 0;
     left: 0;
     width: 100%;
   }
 
 
-
-  /*-------------------*\
-    $ header
-  \*-------------------*/
-
-
-  .student__tabs {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    height: 1rem;
-    background: #fff;
-    box-shadow: 0 4px 6px rgba(0,0,0, 0.2);
-
-    .tab-item {
-      height: 100%;
-      line-height: 1rem;
-      padding: 0 0.5rem;
-    }
-
-    .curr {
-      color: #639EF4;
-      border-bottom: 4px solid #639EF4;
-    }
-
-  }
-
-
-
-  /*-------------------*\
-    $ 时间轴 列表
-  \*-------------------*/
-
-
-  .student__timeline {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 10rem;
+  .index__content {
+    position: relative;
     width: 100%;
+    height: 100%;
+    // overflow: hidden;
 
-    .timeline-wrapper {
+    // padding-bottom: 180px;
+    // height: auto !important;
+    // min-height: 600px;
+
+    background: #fff;
+  }
+
+
+
+  /*-------------------*\
+    $ banner
+  \*-------------------*/
+
+  .index__banner {
+    width: 100%;
+    height: calc(100% - 100px);
+
+    background: #FDFDFD;
+
+    .banner__inner {
       width: 100%;
+      height: 100%;
+      background-image: url(https://p1.liveauctioneers.com/dist/images/hunt.jpg?format=pjpg&auto=webp);
+
+      background-position: center, center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      // background-size: cover;
     }
   }
 
+
+
+
+  /*-------------------*\
+    $ 市场
+  \*-------------------*/
+
+
+  .index__market {
+    width: 100%;
+    height: 100%;
+
+    background: #AB9485;
+
+    .market__wrap {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      margin: 0 auto;
+      padding: 100px 0 0;
+      width: 1000px;
+
+      color: #fff;
+
+      .market__country {
+        flex: 1;
+        max-width: 135px;
+        text-align: left;
+        line-height: 1.5;
+
+        .country--name {
+          font-size: 26px;
+        }
+
+        .country--city {
+          // font-size: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+
+  .index__recommend {
+    position: relative;
+    min-width: 100%;
+    height: 100%;
+    // mixnoverflow: auto;
+    overflow: visible;
+
+    .recommends__wrap {
+      margin: 0 auto;
+      width: 1000px;
+    }
+
+    .recommend__area1,
+    .recommend__area2,
+    .recommend__area3 {
+      position: absolute;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      color: #fff;
+      cursor: pointer;
+
+      .recommend--desc {
+        text-align: left;
+        width: 260px;
+        font-size: 16px;
+      }
+
+      .recommend__image-wrap {
+        position: relative;
+        width: 300px;
+        height: 400px;
+        // background: #c8c8c8;
+      }
+
+      .recommend--image {
+        position: absolute;
+        // top: 50%;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    .recommend__area1 {
+      top: 50px;
+      left: 100px;
+    }
+
+    .recommend__area2 {
+      top: calc(100% - 200px);
+      right: 100px;
+      align-items: center;
+    }
+
+    .recommend__area3 {
+      bottom: calc(-100% + 50px);
+      left: 100px;
+    }
+  }
+
+  .index__recommend,
+  .index__recommend2 {
+    display: block;
+    content: '';
+    width: 100%;
+    height: 100%;
+     background: #B04D39;
+  }
+
+  .index__recommend2 {
+    background: #DBC309;
+  }
 
 
   /*-------------------*\
     $ 网络超时重连
   \*-------------------*/
+
+  .index__footer {
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    width: 100%;
+  }
 
 
 
