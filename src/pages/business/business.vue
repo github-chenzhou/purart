@@ -8,7 +8,7 @@
 
 <template>
   <section class="page">
-    <Header-Component :index="index"></Header-Component>
+    <Header-Component :index="index" class="page-fixed"></Header-Component>
 
     <div class="page__content">
       <section class="content__left">

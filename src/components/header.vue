@@ -1,5 +1,5 @@
 <template>
-   <div class="page_header">
+   <div class="page_header ">
     <!-- 导航信息 -->
     <div class="page__nav">
       <div class="nav__logo">
