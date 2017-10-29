@@ -5,8 +5,9 @@ import 'element-ui/lib/theme-default/index.css'
 import Element from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 
-import Business from '@/pages/business/business'
+// import Business from '@/pages/business/business'
 import Index from '@/pages/index/index'
+const Live = resolve => require(['@/pages/live/live'], resolve)
 // // 商品组件
 // const Product = resolve => require(['@/pages/business/product'], resolve)
 // // 拍卖场组件
@@ -30,6 +31,11 @@ const router = new Router({
       name: 'Index',
       component: Index
     },
+    {
+      path: '/live',
+      name: 'Live',
+      component: Live
+    }
 
     /*
     {

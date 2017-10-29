@@ -49,6 +49,11 @@ if (process.env.NODE_ENV === 'production') {
       // Deal
       'DEAL': host + '/seller/bid_result/',
       'TEST': ''
+    },
+
+    live: {
+      // 获取商品
+      GET_SALE_INFO: host + '/auction/get_sale_info/'
     }
   }
 
@@ -92,6 +97,11 @@ if (process.env.NODE_ENV === 'production') {
       // Deal
       'DEAL': host_dev + '/seller/bid_result/',
       'TEST': ''
+    },
+
+    live: {
+      // 获取商品
+      GET_SALE_INFO: host_dev + '/auction/get_sale_info/'
     }
   }
 }

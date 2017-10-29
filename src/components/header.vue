@@ -3,11 +3,11 @@
     <!-- 导航信息 -->
     <div class="page__nav">
       <div class="nav__logo">
-        <router-link to="/index"><img src="http://ox4oktbuv.bkt.clouddn.com/o_1bt17tg2v1ece1qmqd8irl81n23g.png" alt="古一巷" /></router-link>
+        <router-link to="/"><img src="http://ox4oktbuv.bkt.clouddn.com/o_1bt17tg2v1ece1qmqd8irl81n23g.png" alt="古一巷" /></router-link>
       </div>
       <div class="nav__menus">
         <ul class="nav__menus__wrap">
-          <li class="nav__menus--item">实时拍卖</li>
+          <li :class="['nav__menus--item', index == 1 ? 'active' : '']"><router-link to="/live" tag="span">实时拍卖</router-link></li>
           <li class="nav__menus--item">下载App</li>
           <li class="nav__menus--item">搜索拍品</li>
           <li class="nav__menus--item">我的订单</li>
@@ -25,7 +25,7 @@ export default {
   props: {
     index: {
       type: String,
-      default: '1'
+      default: '0'
     }
   },
   data () {
@@ -48,7 +48,7 @@ export default {
 
 
   .page_header {
-     background: #fff;
+    background: #fff;
   }
 
   .page__nav {
@@ -98,6 +98,10 @@ export default {
         .nav__menus--item {
           text-align: center;
           cursor: pointer;
+        }
+
+        .active {
+          border-bottom: 2px solid #AB9485;
         }
 
       }
