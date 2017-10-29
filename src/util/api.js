@@ -53,7 +53,9 @@ if (process.env.NODE_ENV === 'production') {
 
     live: {
       // 获取商品
-      GET_SALE_INFO: host + '/auction/get_sale_info/'
+      GET_SALE_INFO: host + '/auction/get_sale_info/'，
+      // 商品状态读取
+      GET_SALE_STATUS: host + '/auction/get_sale_status/'
     }
   }
 
@@ -101,7 +103,9 @@ if (process.env.NODE_ENV === 'production') {
 
     live: {
       // 获取商品
-      GET_SALE_INFO: host_dev + '/auction/get_sale_info/'
+      GET_SALE_INFO: host_dev + '/auction/get_sale_info/',
+      // 商品状态读取
+      GET_SALE_STATUS: host_dev + '/auction/get_sale_status/'
     }
   }
 }

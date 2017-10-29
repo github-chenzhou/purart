@@ -209,6 +209,35 @@
 
               this.list = data;
 
+
+
+              return data;
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+
+      /*
+       * @method 读取商品状态
+       * @param
+       */
+      getSaleStatus(saleID) {
+        // sale_id=1
+        let self = this;
+        let URL = API.live.GET_SALE_STATUS;
+        let params = {
+          'sale_id': saleID
+        }
+
+        return request.get(URL, params)
+          .then((res) => {
+            if(res && res.data) {
+              let data = res.data;
+
+              console.log(data);
+
               return data;
             }
           })
