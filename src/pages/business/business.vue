@@ -230,7 +230,7 @@
     align-items: flex-start;
     justify-content: flex-start;
 
-    padding-top: 61px;
+    padding-top: 110px;
 
     width: 100%;
     height: 100%;
