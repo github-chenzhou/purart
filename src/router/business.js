@@ -28,7 +28,7 @@ Vue.use(Element, { locale })
 const businessRouter = new Router({
   // base: '/',
   base: process.env.NODE_ENV === 'production' ? '/business' : '/',
-  mode: process.env.NODE_ENV === 'production' ? 'history' : 'hash',
+  mode: process.env.NODE_ENV === 'production' ? 'hash' : 'history',
   routes: [{
       path: '/',
       name: 'business',
