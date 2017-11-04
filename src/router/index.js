@@ -11,6 +11,7 @@ const Live = resolve => require(['@/pages/live/live'], resolve)
 const Search = resolve => require(['@/pages/search/search'], resolve)
 const Order = resolve => require(['@/pages/order/order'], resolve)
 const Aftermarket = resolve => require(['@/pages/aftermarket/aftermarket'], resolve)
+const Download = resolve => require(['@/pages/download/download'], resolve)
 
 
 Vue.use(Router)
@@ -47,38 +48,12 @@ const router = new Router({
       path: '/aftermarket',
       name: 'aftermarket',
       component: Aftermarket
-    }
-
-    /*
+    },
     {
-      path: '/business',
-      name: 'business',
-      component: Business,
-      children: [
-        {
-          // 当 /product 匹配成功，
-          // product 会被渲染在 User 的 <router-view> 中
-          path: 'product',
-          name: 'business-product',
-          component: Product
-        },
-        {
-          // 当 /product 匹配成功，
-          // product 会被渲染在 User 的 <router-view> 中
-          path: 'auction',
-          name: 'business-auction',
-          component: Auction
-        },
-        {
-          // 当 /product 匹配成功，
-          // product 会被渲染在 User 的 <router-view> 中
-          path: 'info',
-          name: 'business-info',
-          component: BusinessInfo
-        }
-      ]
+      path: '/download',
+      name: 'download',
+      component: Download
     }
-    */
 
   ]
 })
