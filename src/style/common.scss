@@ -1,0 +1,242 @@
+.auction__product {
+    // width: 375px;
+    // min-height: 667px;
+    width: 380px;
+    height: 100%;
+    min-height: 520px;
+
+    // background: #ccc;
+    .product__info {
+      box-sizing: border-box;
+      position: relative;
+      width: 100%;
+      height: 480px;
+
+      background-image: url(http://ox4oktbuv.bkt.clouddn.com/o_1btj7tr89btv1cak1i3o73qdvm25.png);
+      background-position: center, center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      .product__wrap {
+        padding-top: 60px;
+      }
+
+      .product__inner {
+        margin:0 auto;
+
+        .image_wrap {
+          box-sizing: border-box;
+          margin: 10px auto 15px;
+
+          width: 188px;
+          height: 188px;
+          // background: #CA8D28;
+
+          .image__wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            cursor: pointer;
+          }
+
+          .live--image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        .product__title {
+          padding: 0 7px;
+          width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+
+          font-size: 15px;
+          color: #000;
+        }
+        .product__desc {
+          font-size: 12px;
+          color: #4A4A4A;
+        }
+
+      }
+
+      .auction__round {
+        z-index: 1;
+        position: absolute;
+        top: -50px;
+
+        margin: auto;
+        left: 0;
+        right: 0;
+
+        svg {
+          position: relative;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .round__info {
+          position: absolute;
+          top: 52px;
+          left: 50%;
+          transform: translateX(-50%);
+
+          line-height: 1;
+          font-size: 10px;
+          color: #AB9485;
+
+          .round--count {
+            font-size: 26px;
+            color: #000;
+          }
+        }
+      }
+
+      .product__bid {
+        z-index: 1;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 120px;
+        font-size: 12px;
+
+        img {
+          display: block;
+          margin: 0 auto;
+          width: 70px;
+          height: 70px;
+        }
+
+        .price__list {
+          transition: transform 1s ease-in-out;
+          width: 120px;
+          height: 105px;
+          position: absolute;
+          top: -20px;
+          left: 0;
+          .price__item {
+            display: inline-block;
+          }
+          .price__item:nth-child(1) {
+            position: absolute;
+            top: 45px;
+            left: 0;
+
+            transform: rotate(-90deg);
+          }
+
+          .price__item:nth-child(2) {
+            position: absolute;
+            top: 13px;
+            left: 13px;
+            transform: rotate(-45deg);
+          }
+
+          .price__item:nth-child(4) {
+            position: absolute;
+            top: 13px;
+            right: 13px;
+            transform: rotate(45deg);
+          }
+
+          .price__item:nth-child(5) {
+            position: absolute;
+            transform: rotate(90deg);
+            top: 45px;
+            right: 0;
+          }
+        }
+      }
+    }
+
+    .auction--btn {
+      margin: 17px auto 0;
+      width: 140px;
+      height: 35px;
+      line-height: 35px;
+
+      font-size: 16px;
+      color: #fff;
+      text-align: center;
+      background: #AB9485;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      border-radius: 4px;
+    }
+}
+
+
+.stamp {
+  position: relative;
+  z-index: 0;
+
+  &:before {
+    content: '';
+    position: absolute;
+    margin: 0 auto;
+    bottom: 10%;
+    left: 10%;
+
+    width: 150px;
+    height: 150px;
+    background-image: url(http://ox4oktbuv.bkt.clouddn.com/o_1bu34v8m7s7ml3kn8v1lrd14vi9.png);
+    background-position: center, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transform: rotate(-2deg) scale(3);
+    transition: all .5s cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  }
+}
+
+.loaded .stamp:before {
+  opacity: 1;
+  transform: rotate(-30deg) scale(1);
+  z-index: 2;
+}
+
+.tearing {
+  position: relative;
+  z-index: 0;
+  &:after {
+    content: '';
+    position: absolute;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 0;
+    background-image: url(http://ox4oktbuv.bkt.clouddn.com/o_1bu361nml1qrq7c2u571ftn1327o.png);
+    background-position: top, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0;
+    transition: height 1s ease-in-out;
+  }
+}
+
+.lost .tearing:after {
+  opacity: 1;
+  height: 100%;
+  z-index: 2;
+}
+
+.el-select-dropdown__list {
+  background: #AB9485;
+}
+
+.el-select-dropdown__item {
+  color: #fff;
+}
+.el-select-dropdown__item.hover {
+  background: rgba(99, 83, 72,0.6);
+}

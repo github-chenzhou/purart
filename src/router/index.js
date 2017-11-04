@@ -8,12 +8,9 @@ import locale from 'element-ui/lib/locale/lang/en'
 // import Business from '@/pages/business/business'
 import Index from '@/pages/index/index'
 const Live = resolve => require(['@/pages/live/live'], resolve)
-// // 商品组件
-// const Product = resolve => require(['@/pages/business/product'], resolve)
-// // 拍卖场组件
-// const Auction = resolve => require(['@/pages/business/auction'], resolve)
-// // 拍行组件
-// const BusinessInfo = resolve => require(['@/pages/business/info'], resolve)
+const Search = resolve => require(['@/pages/search/search'], resolve)
+const Order = resolve => require(['@/pages/order/order'], resolve)
+const Aftermarket = resolve => require(['@/pages/aftermarket/aftermarket'], resolve)
 
 
 Vue.use(Router)
@@ -35,6 +32,21 @@ const router = new Router({
       path: '/live',
       name: 'Live',
       component: Live
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
+    },
+    {
+      path: '/aftermarket',
+      name: 'aftermarket',
+      component: Aftermarket
     }
 
     /*

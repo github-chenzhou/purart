@@ -9,12 +9,11 @@
         <ul class="nav__menus__wrap">
           <li :class="['nav__menus--item', index == 1 ? 'active' : '']"><router-link to="/live" tag="span">实时拍卖</router-link></li>
           <li class="nav__menus--item">下载App</li>
-          <li class="nav__menus--item">搜索拍品</li>
-          <li class="nav__menus--item">我的订单</li>
-          <li class="nav__menus--item">售后</li>
+          <li :class="['nav__menus--item', index == 3 ? 'active' : '']"><router-link to="/search" tag="span">搜索拍品</router-link></li>
+          <li :class="['nav__menus--item', index == 4 ? 'active' : '']"><router-link to="/order" tag="span">我的订单</router-link></li>
+          <li :class="['nav__menus--item', index == 5 ? 'active' : '']"><router-link to="/aftermarket" tag="span">售后</router-link></li>
         </ul>
       </div>
-      <!-- <div class="nav__tel">电话: 010-88888888</div> -->
     </div>
   </div>
 </template>

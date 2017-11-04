@@ -15,15 +15,56 @@
 
     <!-- 内容 -->
     <section class="live__auction">
-      <div :class="['auction__product', product.over ? 'loaded': '', product.tearing ? 'lost': '']" v-for="(product, index) in list">
-        <div class="product__info stamp tearing" >
+      <!-- 筛选操作  -->
+      <div class="auction__filter">
+        <div class="field has-addons search__cmp">
+          <div class="control search__ipt">
+            <input class="input" type="text" placeholder="">
+          </div>
+          <div class="control search__btn">
+            <!-- is-info -->
+            <a class="button">搜索</a>
+          </div>
+        </div>
+
+        <div class="field has-addons search__fields">
+          <p :class="['control', type == 1 ? 'active' : '']"  @click="handelfilter(1, $event)">
+            <a class="button">
+              <span class="icon is-small">
+                <i class="iconfont icon-paixu"></i>
+              </span>
+              <span>按价格排序</span>
+            </a>
+          </p>
+          <p :class="['control', type == 2 ? 'active' : '']"  @click="handelfilter(2, $event)">
+            <a class="button">
+              <span class="icon is-small">
+                <i class="iconfont icon-paixu"></i>
+              </span>
+              <span>按人数排序</span>
+            </a>
+          </p>
+          <p class="control">
+            <a class="button">
+              <span>筛选</span>
+            </a>
+          </p>
+        </div>
+      </div>
+
+
+      <!-- 内容区 -->
+      <el-carousel class="search__list" height="500px" interval="1000000000" arrow="always" autoplay="false" indicator-position="none">
+        <el-carousel-item class="auction__product--wrap" v-for="product in list" :key="product">
+        <div class=" auction__product">
+        <div class="product__info">
           <div class="product__wrap">
             <!-- 拍品内容展示 -->
             <div class="product__inner">
               <p class="product__title">{{ product.description }} | {{ product.title }}</p>
               <!-- 图片列表 -->
               <div class="image_wrap">
-                <el-carousel :interval="4500" height="188px" v-if="product.imgs.length" indicator-position="none">
+                <el-carousel :interval="4500" height="188px" v-if="product.imgs.length">
                   <el-carousel-item v-for="(item, index) in product.imgs" :key="item">
                     <div class="image__wrapper">
                       <img class="live--image" :data-index="index" :src="item" @load="handlelaodImg" @click="handleScaleImage" />
@@ -54,9 +95,9 @@
           </div>
 
           <!-- 钟表 -->
-          <div class="product__bid" >
+          <div class="product__bid">
             <!-- 价格 -->
-            <ul :class="['price__list', product.add ? 'rotateleft': '', product.reduce ? 'rotateright': '']" @click="handlebid(index, $event)">
+            <ul class="price__list">
               <li class="price__item">300</li>
               <li class="price__item">400</li>
               <li class="price__item">500</li>
@@ -64,19 +105,15 @@
               <li class="price__item">1200</li>
             </ul>
             <!-- 按钮 -->
-            <img class="" src="http://ox4oktbuv.bkt.clouddn.com/o_1btj89ii66ku1uld14lkjmu60s2r.png" >
+            <img class="" src="http://ox4oktbuv.bkt.clouddn.com/o_1btj89ii66ku1uld14lkjmu60s2r.png">
           </div>
         </div>
-        <div class="auction--btn">一键拍卖</div>
-      </div>
+        </div>
+        </el-carousel-item>
+      </el-carousel>
 
     </section>
 
-
-    <!-- footer -->
-    <!-- <div class="index__footer"><Footer-Component></Footer-Component></div> -->
-
-    <router-view></router-view>
   </section>
 </template>
 
@@ -87,7 +124,6 @@
   import drawmixin from '@/pages/live/draw-mixin'
 
   import HeaderComponent from '@/components/header'
-  import FooterComponent from '@/components/footer'
 
 
   // 子组件不需要引用直接使用
@@ -102,7 +138,9 @@
     },
     data() {
       return {
-        index: 1,
+        index: 3,
+        // 1 按价格排序 2 按人数排序
+        type: 1,
         scaleImages: [],
         list: [
           {
@@ -154,8 +192,7 @@
       };
     },
     components: {
-      HeaderComponent,
-      FooterComponent
+      HeaderComponent
     },
     computed: {
     },
@@ -178,8 +215,8 @@
 
         // 图标数据 已完成 已看 班级人数
         this.drawPie([3, 10], document.querySelectorAll('.J_round svg')[0]);
-        this.drawPie([4, 10], document.querySelectorAll('.J_round svg')[1]);
-        this.drawPie([7, 10], document.querySelectorAll('.J_round svg')[2]);
+        this.drawPie([7, 10], document.querySelectorAll('.J_round svg')[1]);
+        this.drawPie([9, 10], document.querySelectorAll('.J_round svg')[2]);
 
         setTimeout(()=>{
           require(['photoswipe', 'photoswipe/dist/photoswipe-ui-default', 'photoswipe/dist/photoswipe.css'], function(PhotoSwipe, PhotoSwipeUI_Default) {
@@ -187,18 +224,6 @@
             window.PhotoSwipeUI_Default = PhotoSwipeUI_Default;
           })
         }, 1500)
-
-        setTimeout(()=>{
-          let pro = this.list[2];
-          pro.over = true;
-          this.list.splice(2, 1, pro);
-        }, 5000)
-
-        setTimeout(()=>{
-          let pro = this.list[1];
-          pro.tearing = true;
-          this.list.splice(1, 1, pro);
-        }, 6000)
       },
 
       /*
@@ -220,6 +245,8 @@
               console.log(data);
 
               this.list = data;
+
+
 
               return data;
             }
@@ -257,21 +284,19 @@
       },
 
       /*
-       * @method 出价
+       * @method 搜索
        * @param
        */
-      handlebid(index, evt) {
-        let pro = this.list[index];
-        pro.reduce = false;
-        pro.add = true;
-        this.list.splice(index, 1, pro);
+      handelsearch() {
 
+      },
 
-        setTimeout(()=>{
-          pro.add = false;
-          pro.reduce = true;
-          this.list.splice(index, 1, pro);
-        }, 3000)
+      /*
+       * @method 读取商品状态
+       * @param
+       */
+      handelfilter(type, evt) {
+        this.type = type;
       },
 
       /*
@@ -359,12 +384,16 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import "~@/style/base.css";
   @import "~@/style/common";
 
   .el-carousel__button {
     width: 20px;
+  }
+
+  .iconfont {
+    font-size: 22px;
   }
 
   .page {
@@ -387,27 +416,89 @@
     position: relative;
     width: 100%;
     min-width: 1200px;
-    height: calc(100% - 110px);
-    // min-height: 667px;
+    height: calc(100% - 100px);
     min-height: 520px;
 
     margin-bottom: 20px;
 
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-around;
-
     background: #fff;
   }
 
-  .rotateright  {
-    transform: rotate(45deg);
+
+  /*-------------------*\
+    $ 筛选
+  \*-------------------*/
+
+  .auction__filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 50px;
+
+    .button, input {
+      height: 48px;
+      color: #AB9485;
+      font-size: 22px;
+    }
+
+    .active {
+      background: rgba(171,148, 113, 0.3);
+    }
+
+    .search__cmp {
+      margin-right: 30px;
+      margin-bottom: 0;
+
+      color: #AB9485;
+      border: 1px solid #AB9485;
+      border-radius: 3px;
+
+      .search__ipt {
+        width: 350px;
+        input:active {
+          border: none;
+        }
+      }
+
+      .search__ipt:active {
+        border: none;
+      }
+
+      .search__btn {
+        .button {
+          width: 80px;
+          border: none;
+          border-left: 1px solid #AB9485;
+        }
+      }
+    }
+
+    .search__fields {
+      .button {
+        background: transparent;
+        border: 1px solid #AB9485;
+      }
+    }
   }
 
-  .rotateleft  {
-    transform: rotate(-45deg);
+  /*-------------------*\
+    $ 内容展示
+  \*-------------------*/
+
+  .search__list {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
   }
 
+  .auction__product--wrap {
+     width: 100%;
+  }
+
+  .auction__product {
+    margin: 20px auto 0;
+  }
 
 
 </style>
