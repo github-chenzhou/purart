@@ -32,8 +32,6 @@ var drawMixin = {
         aAngle[i] = 270 * aScale[i];
       }
 
-      // var svg = document.querySelector('.J_round svg');
-
       var r = 33;
       var centX = 150,
         centY = 75;
